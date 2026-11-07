@@ -1,0 +1,42 @@
+name: Repository checks
+
+on:
+  push:
+  pull_request:
+
+# Read-only token: the job only reads the code.
+permissions:
+  contents: read
+
+jobs:
+  static-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - name: Install Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.12"
+      - name: Install Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version: "22"
+      - name: Validate local assets and documentation
+        run: python3 scripts/validate_repository.py
+      - name: Verify JavaScript syntax
+        run: |
+          for f in app/js/*.js app/js/*/*.js; do node --check "$f"; done
+      - name: Run learning-engine and content tests
+        env:
+          TZ: America/Chicago
+        run: node --test tests/core.test.js tests/content.test.js
+      - name: Check the native app's data generated from the web app is current
+        run: |
+          node desktop/tools/export_course.js | diff -u desktop/content/course.json -
+          node desktop/tools/web_reference.js | diff -u desktop/tests/data/web_reference.json -
+      - name: Check the phoneme reference matches espeak-ng
+        # The bundled voice was trained on espeak-ng's phonemes; the app's own phonemizer is tested against them.
+        run: |
+          pip install espeakng-loader==0.2.4
+          python3 desktop/tools/phoneme_reference.py | diff -u desktop/tests/data/phonemes_es419.json -

@@ -1,0 +1,29 @@
+name: Feature proposal
+description: Suggest a targeted product or engineering enhancement.
+title: "feat: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: Identify the user problem or technical limitation.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the behavior, boundaries, and acceptance criteria.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Subsystem
+      options:
+        - App UI
+        - Native desktop app (C++ / Qt)
+        - Learning engine
+        - Content and localization
+        - Documentation and assets

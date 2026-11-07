@@ -1,0 +1,92 @@
+# Operating system
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# Local databases and learner data
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite3.v*.bak
+local-data/
+user-data/
+recordings/
+
+# Build outputs
+build/
+build-*/
+# Qt Creator per-machine settings
+CMakeLists.txt.user*
+CMakeUserPresets.json
+dist/
+*.app/
+*.dmg
+*.icns.tmp
+
+# Sensitive configuration
+.env
+.env.*
+!.env.example
+*.p12
+*.p8
+*.mobileprovision
+*.key
+*.pem
+*.pfx
+*.p7b
+*.keystore
+*.jks
+secrets/
+.netrc
+.npmrc
+
+# A learner's own files: backups and streaming histories
+learnquick-backup-*.json
+NetflixViewingHistory*.csv
+ViewingActivity*.csv
+netflix-report*/
+
+# Assistant and editor settings for this machine only
+.claude/
+CLAUDE.local.md
+
+# Logs and archives
+*.log
+logs/
+*.zip
+*.7z
+*.rar
+*.tar.gz
+*.tgz
+
+# Binaries and downloaded models: built or fetched by CMake, never committed
+*.exe
+*.dll
+*.dylib
+*.pdb
+*.onnx
+
+# Local QA screenshots (the README's own images live in assets/screenshots/)
+/screenshots/
+/qa/

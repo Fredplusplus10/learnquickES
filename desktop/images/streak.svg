@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- LearnQuick's streak flame. StreakIcon.qml draws the same paths. -->
+  <defs>
+    <linearGradient id="outer" x1="0" y1="3" x2="0" y2="61" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffa043"/>
+      <stop offset="1" stop-color="#e8501b"/>
+    </linearGradient>
+    <linearGradient id="core" x1="0" y1="29" x2="0" y2="59" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffe08a"/>
+      <stop offset="1" stop-color="#ffb43a"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#outer)" d="M33 3C35 13 44 19 48 27C52 34 53 41 51 47C48 56 41 61 32 61C22 61 13 54 13 43C13 35 17 28 22 23C22 29 24 33 27 35C26 24 28 12 33 3Z"/>
+  <path fill="url(#core)" d="M32 29C34 36 42 40 42 49C42 55 37 59 32 59C27 59 22 55 22 49C22 44 25 41 27 39C27 43 29 45 30 45C29 40 29 34 32 29Z"/>
+</svg>

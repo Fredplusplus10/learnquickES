@@ -1,0 +1,140 @@
+name: Desktop app
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+
+concurrency:
+  group: desktop-${{ github.ref }}
+  cancel-in-progress: true
+
+# Read-only token: the jobs only check out code and upload artifacts, which use their own runtime token.
+permissions:
+  contents: read
+
+jobs:
+  build:
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # windows-latest now ships VS 2026; Qt 6 supports MSVC 2022 on x86_64, the same compiler as the dev setup.
+          - os: windows-2022
+            # The released aqtinstall (3.3) cannot download Qt 6.11+ for Windows yet; move to 6.12 when 3.4 ships.
+            qt: "6.10.3"
+            arch: win64_msvc2022_64
+            cmake-args: ""
+            exe: dist/bin/LearnQuick.exe
+          - os: macos-latest
+            qt: "6.12.0"
+            arch: clang_64
+            exe: dist/LearnQuick.app/Contents/MacOS/LearnQuick
+            # Universal binary: runs on Apple Silicon and Intel Macs.
+            cmake-args: '"-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64"'
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+
+      - name: Install Qt ${{ matrix.qt }}
+        uses: jurplel/install-qt-action@b344308e4483fc892e0d27b3cd1b173ebdd95f06 # v4.5.0
+        with:
+          version: ${{ matrix.qt }}
+          arch: ${{ matrix.arch }}
+          # Text-to-speech with the system's voices (AVSpeech on macOS, WinRT/SAPI on Windows); it needs Multimedia.
+          modules: qtspeech qtmultimedia
+          cache: true
+
+      - name: Configure
+        run: cmake -S desktop -B build -DCMAKE_BUILD_TYPE=Release ${{ matrix.cmake-args }}
+
+      - name: Build
+        run: cmake --build build --config Release --parallel
+
+      - name: Tests (build tree)
+        # Engine, storage and view-model tests, parity with the web app, and a headless smoke test per screen.
+        run: ctest --test-dir build -C Release --output-on-failure
+
+      - name: Deploy
+        # Qt deployment on Windows needs an absolute prefix.
+        run: cmake --install build --config Release --prefix "${{ github.workspace }}/dist"
+
+      - name: Ad-hoc sign (macOS)
+        if: runner.os == 'macOS'
+        # Deployment rewrites the binaries, and Apple Silicon refuses to run unsigned code.
+        run: codesign --force --deep --sign - dist/LearnQuick.app
+
+      - name: Smoke test and screenshots (deployed app)
+        env:
+          QT_QPA_PLATFORM: offscreen
+          QT_QUICK_BACKEND: software
+        run: |
+          # Nothing from the runner's Qt: install-qt-action points QT_PLUGIN_PATH and QML2_IMPORT_PATH at it and puts
+          # its bin/ on PATH, which hid every plugin the package was missing. The app is tested as Cory gets it.
+          unset QT_PLUGIN_PATH QML2_IMPORT_PATH QML_IMPORT_PATH
+          [ -n "$QT_ROOT_DIR" ] || { echo "install-qt-action did not set QT_ROOT_DIR."; exit 1; }
+          qt_root="$QT_ROOT_DIR"
+          if [ "$RUNNER_OS" = Windows ]; then qt_root="$(cygpath -u "$qt_root")"; fi
+          PATH="$(printf '%s' "$PATH" | tr ':' '\n' | grep -viF "$qt_root" | paste -sd: -)"
+          # Proof: the platform plugin comes from the package, and Qt never looks inside the runner's installation.
+          if ! QT_DEBUG_PLUGINS=1 QT_FORCE_STDERR_LOGGING=1 ${{ matrix.exe }} --smoke-test --demo 2> plugins.log; then
+            cat plugins.log
+            exit 1
+          fi
+          grep -qi 'qoffscreen' plugins.log || { cat plugins.log; echo "The offscreen plugin did not load."; exit 1; }
+          if grep -iF "${QT_ROOT_DIR//\\//}" plugins.log; then echo "The app used the runner's Qt (above)."; exit 1; fi
+          # A fresh database proves the deployed app ships the SQLite plugin.
+          data="$RUNNER_TEMP/learnquick-data"
+          # --require-speech: the built-in voice speaks, and the text-to-speech plugin was deployed too.
+          ${{ matrix.exe }} --smoke-test --require-speech --data-dir "$data"
+          ${{ matrix.exe }} --smoke-test --demo
+          # On Windows the offscreen platform only looks for fonts in Qt's own folder; point it at the system fonts.
+          if [ "$RUNNER_OS" = Windows ]; then export QT_QPA_FONTDIR='C:\Windows\Fonts'; fi
+          mkdir -p screenshots
+          for step in 1 2 3; do
+            ${{ matrix.exe }} --screenshot "screenshots/welcome-$step.png" --data-dir "$data" --welcome-step $step
+          done
+          # One per screen of the daily plan, on the sample learner.
+          for route in today lessons lesson/7/vocab lesson/7/grammar lesson/7/dialogue lesson/7/practice \
+                       practice/review practice/verbs practice/gender checkpoint/1 mock/writing coach settings \
+                       practice vocab immersion progress; do
+            ${{ matrix.exe }} --screenshot "screenshots/${route//\//-}.png" --demo --today 2026-11-02 --open "$route"
+          done
+          # Night mode, on the screens with the most colours.
+          for route in today lessons lesson/7/dialogue lesson/7/practice practice/verbs coach settings immersion progress; do
+            ${{ matrix.exe }} --screenshot "screenshots/night-${route//\//-}.png" --demo --today 2026-11-02 --open "$route" --theme dark
+          done
+          ${{ matrix.exe }} --screenshot "screenshots/night-welcome-1.png" --data-dir "$data" --welcome-step 1 --theme dark
+
+      - name: Package disk image (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          mkdir dmg
+          cp -R dist/LearnQuick.app dmg/
+          ln -s /Applications dmg/Applications
+          hdiutil create -volname LearnQuick -srcfolder dmg -ov -format UDZO LearnQuick.dmg
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: screenshots-${{ runner.os }}
+          path: screenshots/
+
+      - name: Upload macOS disk image
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: LearnQuick-macos
+          path: LearnQuick.dmg
+
+      - name: Upload Windows build
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: LearnQuick-windows
+          path: dist/

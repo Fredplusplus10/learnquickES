@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 160" width="144" height="160" role="img" aria-label="LearnQuick B1 readiness level badge">
+<defs><linearGradient id="metal" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#F0D08B"/><stop offset="1" stop-color="#B95B25"/></linearGradient></defs>
+<path d="M49 102 38 152 70 135 84 154 89 106 M94 102 106 151 80 136 65 153 55 106" fill="#B95B25" stroke="#F0D08B" stroke-width="2"/>
+<circle cx="72" cy="72" r="63" fill="url(#metal)" stroke="#C28B3A" stroke-width="2"/>
+<circle cx="72" cy="72" r="54" fill="#B95B25" stroke="#FFF3D5" stroke-width="3"/>
+<circle cx="72" cy="72" r="47" fill="none" stroke="#FFE2B2" stroke-dasharray="2 5" stroke-width="2"/>
+<text x="72" y="87" text-anchor="middle" font-size="49" font-family="Georgia,Times New Roman,serif" fill="#FFFFFF">B1</text>
+<text x="72" y="109" text-anchor="middle" font-size="10" font-family="Arial,sans-serif" letter-spacing="1.1" fill="#FFF3D5">LEARNQUICK</text>
+</svg>

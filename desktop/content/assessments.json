@@ -1,0 +1,218 @@
+{
+ "about": "The A1, A2 and B1 level assessments behind the Certificates of Readiness (lq/assessment.h). Hand-written for the desktop app, apart from course.json, and never shown as practice. In every question the first option is the right one; the app shuffles them. Each attempt draws one reading text, one listening text and 12 of the language questions.",
+ "levels": [
+  {
+   "level": "A1",
+   "reading": [
+    {
+     "text": "Hola, me llamo Sofía. Soy de Monterrey, pero ahora estoy en Chicago por mi trabajo. Soy enfermera y trabajo en un hospital muy grande. Tengo dos hermanos y un perro, Max. Los sábados no trabajo: corro en el parque y cocino con mi familia. Este fin de semana voy a visitar a mi hermano en Denver. ¡Estoy muy contenta!",
+     "questions": [
+      { "q": "¿De dónde es Sofía?", "o": ["De Monterrey.", "De Chicago.", "De Denver."] },
+      { "q": "¿Dónde está ahora?", "o": ["En Chicago.", "En Monterrey.", "En Denver."] },
+      { "q": "¿Qué hace Sofía?", "o": ["Es enfermera.", "Es profesora.", "Es cocinera."] },
+      { "q": "¿Qué hace los sábados?", "o": ["Corre en el parque y cocina.", "Trabaja en el hospital.", "Estudia inglés."] },
+      { "q": "¿Qué va a hacer este fin de semana?", "o": ["Va a visitar a su hermano.", "Va a trabajar en el hospital.", "Va a comprar un perro."] }
+     ]
+    },
+    {
+     "text": "Hola, Pablo:\n\nEstoy en el café de la calle Juárez. El café está cerca de la estación y es muy bonito. Hoy no puedo ir a la clase de español porque tengo que trabajar a las seis. ¿Quieres comer conmigo mañana? Quiero probar el restaurante nuevo del centro. Necesito tu número de teléfono, porque tengo un teléfono nuevo.\n\nUn abrazo,\nElena",
+     "questions": [
+      { "q": "¿Dónde está Elena?", "o": ["En un café.", "En la estación.", "En la clase de español."] },
+      { "q": "¿Cómo es el café?", "o": ["Bonito y cerca de la estación.", "Grande y lejos del centro.", "Nuevo y muy caro."] },
+      { "q": "¿Por qué no puede ir a la clase?", "o": ["Porque tiene que trabajar.", "Porque está enferma.", "Porque no tiene teléfono."] },
+      { "q": "¿Qué quiere hacer Elena mañana?", "o": ["Comer con Pablo.", "Ir a la clase de español.", "Comprar un teléfono."] },
+      { "q": "¿Qué necesita Elena?", "o": ["El número de Pablo.", "Un teléfono nuevo.", "Dinero para comer."] }
+     ]
+    }
+   ],
+   "listening": [
+    {
+     "intro": "A voicemail from a friend.",
+     "text": "Hola, Carlos, soy Ana. Son las cuatro de la tarde. Estoy en casa, pero estoy un poco cansada. Mañana voy a ir al supermercado a las diez. ¿Puedes ir conmigo? Necesito comprar fruta, pan y café para la fiesta del sábado. La fiesta es en mi casa, a las ocho de la noche. ¡Hasta luego!",
+     "questions": [
+      { "q": "¿Cómo está Ana?", "o": ["Un poco cansada.", "Muy enferma.", "Muy contenta."] },
+      { "q": "¿Cuándo va a ir al supermercado?", "o": ["Mañana a las diez.", "Hoy a las cuatro.", "El sábado a las ocho."] },
+      { "q": "¿Qué necesita comprar?", "o": ["Fruta, pan y café.", "Leche, agua y arroz.", "Pollo, queso y vino."] },
+      { "q": "¿Dónde es la fiesta?", "o": ["En la casa de Ana.", "En el supermercado.", "En un restaurante."] },
+      { "q": "¿A qué hora es la fiesta?", "o": ["A las ocho de la noche.", "A las diez de la mañana.", "A las cuatro de la tarde."] }
+     ]
+    },
+    {
+     "intro": "A new teacher introduces himself to the class.",
+     "text": "Buenos días a todos. Me llamo Daniel y soy el nuevo profesor de la clase. Soy de Guadalajara, en México. Tengo treinta y cinco años. Vivo aquí con mi esposa y mis dos hijas. Los sábados juego al fútbol con mis hijas en el parque. La clase es los martes y los jueves, de seis a ocho de la noche. Hoy vamos a hablar de la familia, y el próximo martes vamos a hablar de la comida.",
+     "questions": [
+      { "q": "¿Quién es Daniel?", "o": ["El nuevo profesor.", "Un estudiante nuevo.", "El esposo de la profesora."] },
+      { "q": "¿De dónde es?", "o": ["De Guadalajara.", "De la Ciudad de México.", "De Monterrey."] },
+      { "q": "¿Con quién vive?", "o": ["Con su esposa y sus dos hijas.", "Con sus padres.", "Con dos amigos."] },
+      { "q": "¿Cuándo es la clase?", "o": ["Los martes y los jueves.", "Los sábados.", "Todos los días."] },
+      { "q": "¿De qué van a hablar hoy?", "o": ["De la familia.", "De la comida.", "Del fútbol."] }
+     ]
+    }
+   ],
+   "language": [
+    { "q": "Yo ___ de Texas.", "o": ["soy", "estoy", "es"] },
+    { "q": "Mi hermana ___ en el hospital hoy.", "o": ["está", "es", "son"] },
+    { "q": "Nosotros ___ muy cansados.", "o": ["estamos", "somos", "están"] },
+    { "q": "Ellos ___ profesores.", "o": ["son", "están", "es"] },
+    { "q": "Hoy ___ lunes.", "o": ["es", "está", "son"] },
+    { "q": "¿Tú ___ hambre?", "o": ["tienes", "eres", "estás"] },
+    { "q": "Mis padres ___ dos carros.", "o": ["tienen", "tiene", "tenemos"] },
+    { "q": "Yo no ___ ir a la fiesta: tengo que trabajar.", "o": ["puedo", "puede", "podemos"] },
+    { "q": "Ana ___ comprar un carro nuevo.", "o": ["quiere", "quiero", "quieres"] },
+    { "q": "Nosotros ___ en una oficina.", "o": ["trabajamos", "trabajan", "trabajo"] },
+    { "q": "¿Ustedes ___ en Chicago?", "o": ["viven", "vive", "vivimos"] },
+    { "q": "Los viernes yo ___ la cena para mi familia.", "o": ["hago", "hace", "haces"] },
+    { "q": "Mañana yo ___ a visitar a mi abuela.", "o": ["voy", "va", "vamos"] },
+    { "q": "El sábado ellos van a ___ en la playa.", "o": ["nadar", "nadan", "nadamos"] },
+    { "q": "___ problema es fácil.", "o": ["El", "La", "Los"] },
+    { "q": "Necesito ___ información, por favor.", "o": ["la", "el", "los"] },
+    { "q": "Es una ciudad muy ___.", "o": ["bonita", "bonito", "bonitos"] },
+    { "q": "¿Dónde ___ el baño?", "o": ["está", "es", "son"] },
+    { "q": "-tion → -ción: \"education\" en español es ___.", "o": ["educación", "educasión", "educatión"] },
+    { "q": "-ty → -dad: \"university\" en español es ___.", "o": ["universidad", "universitad", "universidá"] }
+   ]
+  },
+  {
+   "level": "A2",
+   "reading": [
+    {
+     "text": "Hola, Lucía:\n\n¿Qué tal tu nuevo trabajo? Yo estoy muy bien en Puebla. Me levanto a las seis y media, me ducho y desayuno en un café cerca de la oficina. Allí preparan unos chilaquiles buenísimos. Trabajo de ocho a cuatro y después voy al gimnasio, porque me encanta nadar. A mi compañera de casa, Marta, no le gusta el deporte: prefiere leer y ver películas. Los fines de semana nos gusta salir a cenar al centro. El restaurante favorito de Marta es muy caro, así que no vamos mucho. ¿Cuándo vienes a visitarme?\n\nUn beso,\nAndrea",
+     "questions": [
+      { "q": "¿Dónde desayuna Andrea?", "o": ["En un café cerca de la oficina.", "En su casa.", "En el gimnasio."] },
+      { "q": "¿Qué hace después del trabajo?", "o": ["Va al gimnasio a nadar.", "Lee y ve películas.", "Cena en el centro."] },
+      { "q": "¿Qué le gusta hacer a Marta?", "o": ["Leer y ver películas.", "Nadar.", "Correr por la mañana."] },
+      { "q": "¿Por qué no van mucho al restaurante favorito de Marta?", "o": ["Porque es muy caro.", "Porque está lejos.", "Porque la comida es mala."] },
+      { "q": "¿Qué quiere saber Andrea al final?", "o": ["Cuándo va a visitarla Lucía.", "Dónde trabaja Lucía.", "A qué hora se levanta Lucía."] }
+     ]
+    },
+    {
+     "text": "Aviso para los clientes\n\nLa tienda Casa Verde tiene un lugar nuevo. Ahora estamos en la calle Hidalgo, número 245, entre el banco y la farmacia. Para llegar desde la estación de metro, salga por la puerta norte, siga todo recto dos cuadras y gire a la derecha en la calle Hidalgo. Abrimos de lunes a sábado, de diez de la mañana a ocho de la noche. Los domingos está cerrado. Esta semana todas las plantas cuestan un veinte por ciento menos. Si compra una planta grande, la llevamos a su casa gratis.",
+     "questions": [
+      { "q": "¿Dónde está la tienda ahora?", "o": ["Entre el banco y la farmacia.", "Enfrente de la estación.", "Detrás del hospital."] },
+      { "q": "¿Qué hay que hacer al salir del metro?", "o": ["Seguir recto dos cuadras y girar a la derecha.", "Girar a la izquierda y seguir tres cuadras.", "Tomar un autobús hasta la calle Hidalgo."] },
+      { "q": "¿Cuándo está cerrada la tienda?", "o": ["Los domingos.", "Los sábados.", "Los lunes."] },
+      { "q": "¿Qué pasa esta semana?", "o": ["Las plantas cuestan menos.", "La tienda cierra temprano.", "La tienda abre los domingos."] },
+      { "q": "¿Qué hace la tienda si alguien compra una planta grande?", "o": ["La lleva a su casa gratis.", "Le regala otra planta.", "La guarda una semana."] }
+     ]
+    }
+   ],
+   "listening": [
+    {
+     "intro": "A message from a restaurant.",
+     "text": "Hola, buenas tardes. Le llamo del restaurante La Terraza para confirmar su reservación para el viernes a las nueve de la noche: una mesa para cuatro personas en la terraza. Le recuerdo que el viernes tenemos música en vivo y que el estacionamiento está cerrado, así que es mejor venir en taxi o en metro. Si quiere cambiar la hora o el número de personas, llámenos hasta el jueves. ¡Gracias, y hasta el viernes!",
+     "questions": [
+      { "q": "¿Para qué día es la reservación?", "o": ["Para el viernes.", "Para el jueves.", "Para el sábado."] },
+      { "q": "¿Para cuántas personas es la mesa?", "o": ["Para cuatro.", "Para dos.", "Para nueve."] },
+      { "q": "¿Qué hay el viernes en el restaurante?", "o": ["Música en vivo.", "Un menú especial.", "Una fiesta de cumpleaños."] },
+      { "q": "¿Por qué es mejor no ir en carro?", "o": ["Porque el estacionamiento está cerrado.", "Porque hay mucho tráfico.", "Porque el restaurante está en el centro."] },
+      { "q": "¿Hasta cuándo se puede cambiar la reservación?", "o": ["Hasta el jueves.", "Hasta el viernes por la noche.", "Hasta el sábado."] }
+     ]
+    },
+    {
+     "intro": "A friend explains how to get to his new home.",
+     "text": "Hola, Pedro, soy Jorge. Te explico cómo llegar a mi casa nueva. Toma el autobús número doce y bájate en la plaza principal. En la plaza hay una iglesia muy grande. Cruza la plaza, gira a la izquierda y sigue todo recto hasta el parque. Mi edificio está enfrente del parque, al lado de una panadería. Vivo en el tercer piso. Si te pierdes, llámame. ¡Ah! Y trae tu guitarra, por favor.",
+     "questions": [
+      { "q": "¿Qué autobús tiene que tomar Pedro?", "o": ["El número doce.", "El número dos.", "El número veinte."] },
+      { "q": "¿Qué hay en la plaza?", "o": ["Una iglesia muy grande.", "Un parque.", "Una panadería."] },
+      { "q": "¿Qué tiene que hacer después de cruzar la plaza?", "o": ["Girar a la izquierda.", "Girar a la derecha.", "Tomar otro autobús."] },
+      { "q": "¿Dónde está el edificio de Jorge?", "o": ["Enfrente del parque.", "Al lado de la iglesia.", "Detrás de la plaza."] },
+      { "q": "¿Qué tiene que traer Pedro?", "o": ["Su guitarra.", "Pan de la panadería.", "Un mapa de la ciudad."] }
+     ]
+    }
+   ],
+   "language": [
+    { "q": "¿___ cuesta esta camisa?", "o": ["Cuánto", "Cuántos", "Cómo"] },
+    { "q": "¿___ vives? — En Phoenix.", "o": ["Dónde", "Cuándo", "Quién"] },
+    { "q": "¿___ es tu cumpleaños? — El 3 de mayo.", "o": ["Cuándo", "Dónde", "Qué"] },
+    { "q": "500 = ___", "o": ["quinientos", "cincocientos", "cinco cien"] },
+    { "q": "A mí me ___ los tacos.", "o": ["gustan", "gusta", "gusto"] },
+    { "q": "A mis padres les ___ viajar.", "o": ["gusta", "gustan", "gustamos"] },
+    { "q": "¿A ti te ___ el café?", "o": ["gusta", "gustas", "gustan"] },
+    { "q": "No me gustan ___ verduras.", "o": ["las", "los", "la"] },
+    { "q": "¿A qué hora ___ despiertas tú?", "o": ["te", "me", "se"] },
+    { "q": "Mis hijos ___ acuestan tarde.", "o": ["se", "me", "nos"] },
+    { "q": "Nosotros nos ___ antes de desayunar.", "o": ["duchamos", "duchan", "ducho"] },
+    { "q": "Mi hermano ___ viste muy rápido por la mañana.", "o": ["se", "le", "lo"] },
+    { "q": "¿El menú? Sí, ahora ___ traigo.", "o": ["lo", "la", "los"] },
+    { "q": "Las tortillas están muy buenas. ¿Dónde ___ compras?", "o": ["las", "los", "la"] },
+    { "q": "Quisiera ___ una mesa para dos personas.", "o": ["reservar", "reservo", "reserva"] },
+    { "q": "Antes de pagar, pedimos la ___.", "o": ["cuenta", "carta", "mesa"] },
+    { "q": "Perdone, ¿___ un banco por aquí?", "o": ["hay", "está", "es"] },
+    { "q": "El museo ___ en la plaza principal.", "o": ["está", "hay", "es"] },
+    { "q": "Siga recto y ___ a la derecha en la segunda calle.", "o": ["gire", "girar", "giro"] },
+    { "q": "Yo siempre ___ el autobús para ir al trabajo.", "o": ["tomo", "toma", "tomas"] }
+   ]
+  },
+  {
+   "level": "B1",
+   "reading": [
+    {
+     "text": "El verano pasado, mi amiga Clara y yo hicimos un viaje a Oaxaca. Llegamos un martes por la noche y el hotel nos dio una sorpresa: no tenía nuestra reservación. Mientras el recepcionista buscaba una solución, empezó a llover muy fuerte. Al final, nos ofreció una habitación en otro hotel de la misma familia, a dos cuadras, y no tuvimos que pagar más. Al día siguiente hacía un sol increíble, así que fuimos al mercado y probamos el mole negro. Cuando yo era niña, mi abuela preparaba mole todos los domingos, y ese sabor me recordó a ella. Ha sido uno de mis mejores viajes. El año que viene volveremos, pero esta vez reservaremos con más tiempo.",
+     "questions": [
+      { "q": "¿Qué problema tuvieron al llegar?", "o": ["El hotel no tenía su reservación.", "Perdieron las maletas.", "El hotel estaba cerrado."] },
+      { "q": "¿Qué pasó mientras el recepcionista buscaba una solución?", "o": ["Empezó a llover.", "Llegó la abuela.", "Se fue la luz."] },
+      { "q": "¿Cómo se resolvió el problema?", "o": ["Les dieron una habitación en otro hotel sin pagar más.", "Durmieron en casa de una amiga.", "Pagaron una habitación más cara."] },
+      { "q": "¿Por qué el mole le recordó a su abuela?", "o": ["Porque su abuela lo preparaba los domingos.", "Porque su abuela vive en Oaxaca.", "Porque comió mole con su abuela en el viaje."] },
+      { "q": "¿Qué van a hacer diferente la próxima vez?", "o": ["Reservar con más tiempo.", "Viajar en invierno.", "Quedarse en casa de la abuela."] }
+     ]
+    },
+    {
+     "text": "Asunto: Cambios en la oficina\n\nEstimado equipo:\n\nLes escribo para informarles de algunos cambios. A partir del lunes 3, la oficina abrirá a las ocho en lugar de a las nueve, para atender mejor a los clientes de la costa este. Sé que para algunos será difícil; por eso, podrán elegir entre dos horarios: de ocho a cuatro o de diez a seis. Por favor, envíenme su elección antes del viernes. Además, hemos comprado sillas nuevas, porque varios de ustedes me han dicho que les duele la espalda. Les recomiendo que se levanten cada hora y caminen un poco. Si tienen alguna pregunta, estoy a su disposición.\n\nUn saludo cordial,\nMercedes Ruiz, directora",
+     "questions": [
+      { "q": "¿Por qué la oficina abrirá más temprano?", "o": ["Para atender mejor a los clientes de la costa este.", "Porque hay mucho trabajo los lunes.", "Porque la directora empieza temprano."] },
+      { "q": "¿Qué pueden elegir los empleados?", "o": ["Entre dos horarios.", "Entre trabajar en casa o en la oficina.", "Entre dos días libres."] },
+      { "q": "¿Qué tienen que hacer antes del viernes?", "o": ["Enviar su elección a la directora.", "Comprar sillas nuevas.", "Llamar a los clientes."] },
+      { "q": "¿Por qué compraron sillas nuevas?", "o": ["Porque a varios empleados les duele la espalda.", "Porque las viejas estaban rotas.", "Porque llegan empleados nuevos."] },
+      { "q": "¿Qué les recomienda la directora?", "o": ["Levantarse y caminar cada hora.", "Llegar antes de las ocho.", "Ir al médico."] }
+     ]
+    }
+   ],
+   "listening": [
+    {
+     "intro": "A doctor leaves a message for her patient.",
+     "text": "Buenos días, señor Gómez. Le habla la doctora Ortiz. Ya tengo los resultados de sus análisis y, por suerte, todo está bien. El dolor de cabeza que tiene desde hace dos semanas probablemente es por el estrés y por dormir poco. Le recomiendo que duerma por lo menos siete horas y que no tome tanto café por la tarde. Si el dolor no mejora en diez días, llame a la clínica para hacer otra cita. Ah, y no se olvide de que la receta está en la recepción: puede pasar por ella cuando quiera, de lunes a viernes.",
+     "questions": [
+      { "q": "¿Cómo salieron los análisis?", "o": ["Todo está bien.", "Necesita más pruebas.", "Tiene una infección."] },
+      { "q": "¿Desde cuándo le duele la cabeza?", "o": ["Desde hace dos semanas.", "Desde hace diez días.", "Desde ayer."] },
+      { "q": "Según la doctora, ¿por qué le duele la cabeza?", "o": ["Por el estrés y por dormir poco.", "Por comer mal.", "Por trabajar con la computadora."] },
+      { "q": "¿Qué le recomienda?", "o": ["Dormir más y tomar menos café por la tarde.", "Tomar pastillas cada noche.", "Dejar de trabajar dos semanas."] },
+      { "q": "¿Qué tiene que recoger en la recepción?", "o": ["La receta.", "Los resultados de los análisis.", "Una cita nueva."] }
+     ]
+    },
+    {
+     "intro": "A friend calls from an airport.",
+     "text": "Hola, Marta, soy Luis. Te llamo desde el aeropuerto de Bogotá. ¡Qué día! Mi vuelo salió con tres horas de retraso porque había una tormenta en Miami. Cuando por fin llegué, se me perdió la maleta: la aerolínea dice que la enviaron a Lima por error. Me han prometido que mañana me la llevarán al hotel. Lo bueno es que llevaba el traje para la reunión en la mochila. Si tuviera más tiempo, me quedaría el fin de semana para conocer la ciudad, pero tengo que volver el jueves. Te llamo esta noche y te cuento más.",
+     "questions": [
+      { "q": "¿Por qué salió tarde el vuelo?", "o": ["Por una tormenta en Miami.", "Porque Luis llegó tarde.", "Por un problema con el avión."] },
+      { "q": "¿Qué le pasó a la maleta?", "o": ["La enviaron a Lima por error.", "Se quedó en Miami.", "Se rompió en el avión."] },
+      { "q": "¿Cuándo va a recibir la maleta?", "o": ["Mañana, en el hotel.", "Esta noche, en el aeropuerto.", "El jueves, en su casa."] },
+      { "q": "¿Por qué la maleta no es un problema para la reunión?", "o": ["Porque el traje estaba en la mochila.", "Porque la reunión es el jueves.", "Porque va a comprar ropa nueva."] },
+      { "q": "¿Por qué no se queda el fin de semana?", "o": ["Porque tiene que volver el jueves.", "Porque no le gusta la ciudad.", "Porque no tiene hotel."] }
+     ]
+    }
+   ],
+   "language": [
+    { "q": "Ayer ___ al cine con mis primos.", "o": ["fui", "iba", "voy"] },
+    { "q": "Cuando era niño, ___ al parque todos los días.", "o": ["iba", "fui", "voy"] },
+    { "q": "El año pasado yo ___ un curso de cocina.", "o": ["hice", "hizo", "haré"] },
+    { "q": "Estaba en la ducha cuando ___ el teléfono.", "o": ["sonó", "suena", "sonará"] },
+    { "q": "Nosotros nunca ___ paella.", "o": ["hemos comido", "han comido", "he comido"] },
+    { "q": "Mañana ___ calor, según el pronóstico.", "o": ["hará", "hizo", "hacía"] },
+    { "q": "Si tengo tiempo, te ___ esta noche.", "o": ["llamaré", "llamaría", "llamé"] },
+    { "q": "¿___ ayudarme con esta maleta, por favor?", "o": ["Podría", "Pude", "Podré"] },
+    { "q": "Yo en tu lugar, ___ más agua.", "o": ["bebería", "beberé", "bebí"] },
+    { "q": "Madrid es ___ grande que Sevilla.", "o": ["más", "tan", "muy"] },
+    { "q": "Mi carro es tan viejo ___ el tuyo.", "o": ["como", "que", "de"] },
+    { "q": "Este regalo es ___ mi madre: hoy es su cumpleaños.", "o": ["para", "por", "en"] },
+    { "q": "Te doy veinte dólares ___ el libro.", "o": ["por", "para", "de"] },
+    { "q": "Caminamos ___ el parque toda la tarde.", "o": ["por", "para", "a"] },
+    { "q": "Espero que ___ un buen viaje.", "o": ["tengas", "tienes", "tendrás"] },
+    { "q": "Me ___ la cabeza desde ayer.", "o": ["duele", "duelen", "dolor"] },
+    { "q": "Me ___ los pies después de correr.", "o": ["duelen", "duele", "duelo"] },
+    { "q": "Se me ___ las llaves en el taxi.", "o": ["olvidaron", "olvidó", "olvidé"] },
+    { "q": "Vivo aquí desde ___ tres años.", "o": ["hace", "hacía", "por"] },
+    { "q": "Llovía mucho; ___, decidimos quedarnos en casa.", "o": ["por eso", "aunque", "sin embargo"] }
+   ]
+  }
+ ]
+}

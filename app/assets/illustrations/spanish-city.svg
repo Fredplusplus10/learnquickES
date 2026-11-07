@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 230" role="img" aria-label="Illustration of a Spanish town skyline">
+<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FFF7EC"/><stop offset="1" stop-color="#FFE9D8"/></linearGradient><linearGradient id="ground" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#A4B58B"/><stop offset="1" stop-color="#718B6B"/></linearGradient></defs>
+<path fill="url(#sky)" d="M0 0h800v230H0z"/><circle cx="659" cy="56" r="41" fill="#FFDDAF" opacity=".72"/>
+<path d="M0 160 80 113l89 44 110-62 105 55 94-58 103 67 99-59 120 51v79H0Z" fill="#D7CDD0" opacity=".43"/><path d="M0 173 131 146l86 33 110-24 143 22 107-21 105 13 118-20v81H0Z" fill="#C3B7AD" opacity=".43"/>
+<path d="M0 206q100-29 188-8t154-5 153-2 152-3 153 3v39H0Z" fill="url(#ground)"/>
+<g stroke="#B68155" stroke-width="2"><path fill="#EDBC8B" d="M160 145h111v62H160z"/><path fill="#E5AC78" d="M255 161h107v49H255z"/><path fill="#FFD5A4" d="M350 136h131v73H350z"/><path fill="#E5AB79" d="M470 163h111v49H470z"/><path fill="#F2C191" d="M573 149h110v61H573z"/><path fill="#F7D19D" d="M685 168h115v47H685z"/>
+<path fill="#B9694F" d="m150 145 64-32 64 32Zm195-9 66-38 77 38Zm223 13 57-32 66 32Z"/><path fill="#C47750" d="m252 161 60-26 56 26Zm431 7 65-23 58 23Z"/>
+<path fill="#E8B987" d="M503 80h63v123h-63z"/><path fill="#DCA06D" d="M516 52h36v31h-36z"/><path fill="#C97651" d="m511 52 23-29 23 29Z"/><path d="M534 20V7M518 69h9v12h-9zM541 69h9v12h-9zM525 103h18v28h-18zM525 146h18v28h-18z" fill="#79533E"/>
+</g><g fill="#806E62"><rect x="185" y="170" width="10" height="18" rx="5"/><rect x="216" y="170" width="10" height="18" rx="5"/><rect x="383" y="156" width="11" height="21" rx="5"/><rect x="425" y="156" width="11" height="21" rx="5"/><rect x="611" y="170" width="10" height="20" rx="5"/><rect x="652" y="170" width="10" height="20" rx="5"/></g>
+<g fill="#5B806C"><path d="m109 211 14-80 14 80ZM88 210l10-62 11 62ZM717 212l13-69 13 69Z"/><circle cx="44" cy="194" r="29"/><circle cx="768" cy="191" r="32"/><circle cx="290" cy="202" r="19"/></g></svg>

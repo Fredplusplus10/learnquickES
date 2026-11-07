@@ -1,0 +1,28 @@
+name: Bug report
+description: Report an issue with the LearnQuick app or repository assets.
+title: "bug: "
+labels: [bug]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem description
+      description: Explain the observed behavior and why it is incorrect.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Provide the smallest reproducible sequence.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: "macOS version, browser and version"
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en" class="native-shell">
+<head>
+  <meta charset="utf-8">
+  <!-- Only the app's own scripts run (no inline ones, so injected markup cannot run code), nothing is fetched
+       from the network, and nothing posts a form anywhere. file: lets it work opened straight from disk. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' file:; style-src 'self' file: 'unsafe-inline'; img-src 'self' file: data: blob:; media-src blob:; font-src 'self' file:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#faf7f4">
+  <meta name="description" content="LearnQuick: a private, offline plan to reach functional B1 Spanish in 30–90 days.">
+  <link rel="icon" type="image/svg+xml" href="assets/logos/learnquick-symbol.svg">
+  <link rel="apple-touch-icon" href="assets/app-icons/learnquick-256.png">
+  <link rel="stylesheet" href="css/kit.css">
+  <link rel="stylesheet" href="css/app.css">
+  <title>LearnQuick</title>
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">Skip to content</a>
+  <div class="desktop">
+    <div class="window" id="appWindow">
+      <header class="titlebar">
+        <div class="title-app"><img src="assets/logos/learnquick-symbol.svg" alt="" width="25" height="25"><strong>LearnQuick</strong></div>
+        <div class="history-controls"><button type="button" class="tool-button" id="goBack" aria-label="Back"><img src="assets/icons/chevron-left.svg" alt=""></button><button type="button" class="tool-button" id="goForward" aria-label="Forward"><img src="assets/icons/chevron-right.svg" alt=""></button></div>
+        <div class="titlebar-spacer"></div>
+        <div class="search-wrap">
+          <label class="search"><img src="assets/icons/search.svg" alt=""><input id="searchInput" type="search" autocomplete="off" aria-label="Search" aria-controls="searchResults"><kbd>⌘ K</kbd></label>
+          <div class="search-results" id="searchResults" role="listbox" hidden></div>
+        </div>
+        <div class="title-status" id="titleStatus"></div>
+      </header>
+      <div class="workspace">
+        <aside class="sidebar" aria-label="Primary navigation">
+          <div class="brand"><img src="assets/logos/learnquick-symbol.svg" alt="" width="36" height="36"><span>LearnQuick</span></div>
+          <nav id="sidebarNavigation"></nav>
+          <div class="sidebar-bottom"><div class="sidebar-note" id="sidebarNote"></div><button type="button" class="nav-item settings-button" id="settingsButton" data-go="settings"><img class="ico" src="assets/icons/settings.svg" alt=""><span>Settings</span></button></div>
+        </aside>
+        <main class="main" id="mainContent" tabindex="-1"></main>
+      </div>
+    </div>
+  </div>
+  <dialog id="modal" class="modal"><form method="dialog"><button class="modal-close" aria-label="Close dialog">×</button><div id="modalContent"></div><div class="modal-footer"><button class="secondary-btn" value="cancel">Close</button></div></form></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <noscript><p style="padding:24px;font:16px -apple-system,sans-serif">LearnQuick needs JavaScript. Open this file in Safari or Chrome.</p></noscript>
+
+  <!-- Plain scripts (not modules) so the app works when opened directly from Finder (file://). Order matters. -->
+  <script src="js/core/util.js"></script>
+  <script src="js/core/calendar.js"></script>
+  <script src="js/core/srs.js"></script>
+  <script src="js/core/streak.js"></script>
+  <script src="js/core/verbs.js"></script>
+  <script src="js/core/progress.js"></script>
+  <script src="js/content/units.js"></script>
+  <script src="js/content/practice.js"></script>
+  <script src="js/core/store.js"></script>
+  <script src="js/ui/components.js"></script>
+  <script src="js/ui/speech.js"></script>
+  <script src="js/ui/exercises.js"></script>
+  <script src="js/views/home.js"></script>
+  <script src="js/views/lessons.js"></script>
+  <script src="js/views/practice.js"></script>
+  <script src="js/views/vocab.js"></script>
+  <script src="js/views/immersion.js"></script>
+  <script src="js/views/progress.js"></script>
+  <script src="js/views/checkpoint.js"></script>
+  <script src="js/views/settings.js"></script>
+  <script src="js/views/onboarding.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

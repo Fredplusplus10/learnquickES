@@ -1,0 +1,42 @@
+{
+  "id": "es-a1-cafe-order-012",
+  "locale": "es-ES",
+  "instructionLocale": "en-US",
+  "level": "A1",
+  "title": "Ordering at a Café",
+  "estimatedMinutes": 12,
+  "objectives": [
+    "Use a polite request to order a drink",
+    "Understand a simple waiter-customer exchange",
+    "Practise the sentence aloud"
+  ],
+  "phrase": {
+    "text": "¿Me puede traer un café, por favor?",
+    "translation": "Can you bring me a coffee, please?",
+    "pronunciationNote": "Use native text-to-speech or a reviewed recording. Approximate hints do not replace audio."
+  },
+  "dialogue": [
+    {"speaker": "student", "text": "¿Me puede traer un café, por favor?", "translation": "Can you bring me a coffee, please?"},
+    {"speaker": "waiter", "text": "¡Claro! ¿Lo quiere solo o con leche?", "translation": "Of course! Would you like it black or with milk?"}
+  ],
+  "vocabulary": [
+    {"spanish": "café", "translation": "coffee"},
+    {"spanish": "leche", "translation": "milk"},
+    {"spanish": "mesa", "translation": "table"},
+    {"spanish": "la cuenta", "translation": "the bill / check"},
+    {"spanish": "por favor", "translation": "please"}
+  ],
+  "quiz": {
+    "type": "single_choice",
+    "prompt": "What does the key phrase mean?",
+    "answers": [
+      "Can I have a coffee?",
+      "Can you bring me a coffee, please?",
+      "Do you like coffee?",
+      "I would like a table, please."
+    ],
+    "correctAnswerIndex": 1,
+    "explanation": "Me puede traer is a polite way to ask someone to bring you something."
+  },
+  "status": "sample_content_not_production_reviewed"
+}
