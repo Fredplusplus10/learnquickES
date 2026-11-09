@@ -115,6 +115,7 @@ qt_add_qml_module(learnquick
         Theme.qml
         TodayPage.qml
         TrainerPage.qml
+        UpdatesCard.qml
         VocabularyPage.qml
         Welcome.qml
     SOURCES

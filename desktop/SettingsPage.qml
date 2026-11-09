@@ -707,6 +707,12 @@ ScrollPage {
         }
     }
 
+    UpdatesCard {
+        Layout.fillWidth: true
+        version: BuildInfo.appVersion
+        releaseUrl: BuildInfo.latestReleaseUrl
+    }
+
     Text {
         Layout.fillWidth: true
         visible: Preferences.error !== ""

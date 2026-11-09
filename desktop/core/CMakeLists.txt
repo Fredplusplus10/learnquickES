@@ -11,6 +11,7 @@ add_library(lq_core STATIC
     include/lq/exercises.h
     include/lq/progress.h
     include/lq/random.h
+    include/lq/release.h
     include/lq/speech.h
     include/lq/srs.h
     include/lq/streak.h
@@ -28,6 +29,7 @@ add_library(lq_core STATIC
     src/exercises.cpp
     src/progress.cpp
     src/random.cpp
+    src/release.cpp
     src/speech.cpp
     src/srs.cpp
     src/streak.cpp
