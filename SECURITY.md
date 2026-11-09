@@ -21,7 +21,7 @@ LearnQuick is a local, single-learner application. Neither app has a server, an 
   - On macOS it looks only after the learner presses *Look in Downloads*, and macOS asks for permission the first time.
   - The file is read on the computer and only what was chosen is kept: titles, dates and minutes. See [docs/NETFLIX-GUIDE.md](docs/NETFLIX-GUIDE.md).
 - It never asks for a streaming-service password, and it has no code that opens a network connection.
-- Links to recommended resources open in the learner's own browser.
+- Links to recommended resources, and *Download latest version* in Settings, open in the learner's own browser. The app itself makes no request.
 
 ## What is protected, and what is not
 
@@ -42,7 +42,19 @@ LearnQuick is a local, single-learner application. Neither app has a server, an 
 
 - **The learner's own data:** whoever can use the computer can open the database or edit a backup. Progress, the streak and achievements are trusted to the learner, as in any offline app.
 - **Certificates of Readiness** are LearnQuick's own records, not CEFR or DELE qualifications. They carry no cryptographic signature, and a third party cannot verify them. The level assessment covers reading, listening, and grammar and vocabulary, not speaking or writing, and its questions ship inside the app, where a determined learner could read them.
-- **Desktop builds from CI** are not code-signed yet. Windows SmartScreen and macOS Gatekeeper warn about them.
+- **Desktop builds** are not code-signed yet. Windows SmartScreen and macOS Gatekeeper warn about them (see [Unsigned downloads](#unsigned-downloads)).
+
+## Unsigned downloads
+
+LearnQuick's first public releases are **not code-signed**. This is a deliberate, temporary decision: signing needs a Windows certificate and an Apple Developer ID, and it is pending (see the [roadmap](docs/ROADMAP.md)). To make up for it, every public release must follow these rules:
+
+- **One official source.** The only official downloads are on the *Releases* page of the public repository. A copy from anywhere else is not official.
+- **A published fingerprint.** Each release carries a `SHA256SUMS.txt` and explains how to check it, with one command for Windows and another for macOS (see [Check your download](docs/INSTALL.md#check-your-download)).
+- **The warnings explained.** Each release says that SmartScreen and Gatekeeper warn because the app is not signed, not because anything harmful was found. [docs/RELEASE_NOTES_TEMPLATE.md](docs/RELEASE_NOTES_TEMPLATE.md) holds that text.
+
+A matching fingerprint shows that the file is the one published and that it arrived intact. It does not show who built it: someone who took over the repository could replace the files and their fingerprints together. Only code signing closes that gap.
+
+No public release exists yet, and the release workflow does not attach `SHA256SUMS.txt` yet.
 
 ## The repository
 
@@ -60,4 +72,5 @@ Use GitHub's private vulnerability reporting if the maintainer enables it. Other
 - Database access through parameterized queries and explicit transactions.
 - Microphone and folder permissions requested only for features the learner starts.
 - Explicit retention and export/deletion policies for study events and recordings.
-- Signed distributables and dependency review before a public release.
+- Dependency review before a public release.
+- Code signing for Windows and Apple, which will replace the measures in [Unsigned downloads](#unsigned-downloads).

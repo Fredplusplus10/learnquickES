@@ -26,6 +26,21 @@ Until LearnQuick has published releases, every build is attached to the run that
 
 GitHub deletes these files 90 days after the run, so download a recent one.
 
+Once LearnQuick has public releases, the only official downloads will be on the **Releases** page of its public repository, which **Settings → Download latest version** opens. A copy from anywhere else is not official.
+
+### Check your download
+
+Each release includes a `SHA256SUMS.txt` file with the fingerprint of every download. To check yours, run this in the folder that holds it and compare the result with that file:
+
+- **Windows** (PowerShell): `Get-FileHash LearnQuick-windows.zip -Algorithm SHA256`
+- **macOS** (Terminal): `shasum -a 256 LearnQuick-macos.zip`
+
+The two fingerprints must be identical. If they are not, delete the file, download it again and do not open it until they match.
+
+### Why Windows and macOS warn you
+
+LearnQuick is not code-signed yet, so Windows SmartScreen and macOS Gatekeeper cannot tell who made it and warn you the first time you open it. The warning is about the missing signature: it does not mean that anything harmful was found. The steps to get past it are under [Windows](#windows) and [macOS](#macos) below.
+
 ## Windows
 
 ### Install
