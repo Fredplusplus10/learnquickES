@@ -9,7 +9,7 @@ namespace lq::release {
 // The public repository. Without a valid name here the download button stays off and the test `release-config`
 // fails, saying what is missing.
 inline constexpr std::string_view kOwner = "Fredplusplus10";
-inline constexpr std::string_view kRepo = "learnquick";
+inline constexpr std::string_view kRepo = "learnquickES";
 
 bool isValidOwner(std::string_view owner);
 bool isValidRepo(std::string_view repo);
