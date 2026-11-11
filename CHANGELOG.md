@@ -88,6 +88,10 @@
   - M2 (Julián, 1.5 % of words missed) narrates and speaks as the learner; the men in dialogues alternate M5 and M4, and M1 (Hugo, 6.8 %) leaves the cast but stays in Settings;
   - storage schema 7 forgets the saved voice and paces, whose meaning changed;
   - the review badges on Words share one width, so the examples line up.
+- Native desktop app, downloads (`desktop/`):
+  - *Download latest version* in Settings opens the public repository's latest release in the learner's browser; the app makes no network request;
+  - `lq/release.h` is the one place that names that repository. Without a valid name the button stays off and the test `release-config` fails, saying what is missing;
+  - unsigned downloads are accepted for now under written rules: one official source, a published `SHA256SUMS.txt` and the operating systems' warnings explained (`SECURITY.md`, `docs/INSTALL.md`, `docs/RELEASE_NOTES_TEMPLATE.md`); code signing stays on the roadmap.
 - Native desktop app, interface polish (`desktop/`):
   - Today: a hero with the town illustration and the streak, today's plan, a progress ring, the week's streak, words due, the coach, quick actions, the route and the calendar; everything comes from the learner's data, with empty states;
   - `--size WxH` opens the window at a set size, to compare screenshots at several widths;

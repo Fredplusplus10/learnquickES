@@ -15,6 +15,7 @@ class BuildInfo : public QObject
     Q_PROPERTY(QString compiler READ compiler CONSTANT)
     Q_PROPERTY(QString platform READ platform CONSTANT)
     Q_PROPERTY(QString architecture READ architecture CONSTANT)
+    Q_PROPERTY(QString latestReleaseUrl READ latestReleaseUrl CONSTANT)
 
 public:
     using QObject::QObject;
@@ -24,4 +25,5 @@ public:
     QString compiler() const;
     QString platform() const;
     QString architecture() const;
+    QString latestReleaseUrl() const;  // empty until lq/release.h names the public repository
 };

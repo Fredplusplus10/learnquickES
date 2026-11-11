@@ -1,5 +1,7 @@
 #include "buildinfo.h"
 
+#include "lq/release.h"
+
 #include <QCoreApplication>
 #include <QSysInfo>
 
@@ -36,4 +38,9 @@ QString BuildInfo::platform() const
 QString BuildInfo::architecture() const
 {
     return QSysInfo::currentCpuArchitecture();
+}
+
+QString BuildInfo::latestReleaseUrl() const
+{
+    return QString::fromStdString(lq::release::latestReleasePage());
 }

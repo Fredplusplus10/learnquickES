@@ -20,6 +20,7 @@ add_executable(lq_core_tests
     demo_tests.cpp
     exercise_tests.cpp
     progress_tests.cpp
+    release_tests.cpp
     speech_tests.cpp
     srs_tests.cpp
     streak_tests.cpp
@@ -36,6 +37,11 @@ target_compile_definitions(lq_core_tests PRIVATE
 )
 lq_set_compile_options(lq_core_tests)
 add_test(NAME core COMMAND lq_core_tests)
+
+# Fails on purpose, saying what is missing, until lq/release.h names the public repository. It is a test of its own so
+# `core` keeps its meaning and nothing else goes red with it; `ctest -LE release-gate` leaves it out.
+add_test(NAME release-config COMMAND lq_core_tests "[release-config]")
+set_tests_properties(release-config PROPERTIES LABELS release-gate)
 
 # The SQLite layer, on throwaway database files.
 add_executable(lq_storage_tests storage_tests.cpp certificate_tests.cpp)
@@ -94,6 +100,14 @@ lq_set_compile_options(lq_keyboard_tests)
 add_test(NAME keyboard COMMAND lq_keyboard_tests)
 set_tests_properties(keyboard PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_QUICK_BACKEND=software")
 
+# The download button in Settings, clicked in a real Qt Quick scene; no browser opens and nothing goes online.
+add_executable(lq_updates_card_tests updates_card_tests.cpp fake_browser.h)
+target_link_libraries(lq_updates_card_tests PRIVATE Qt6::Gui Qt6::Quick Qt6::QuickTest Qt6::Test Catch2::Catch2)
+target_compile_definitions(lq_updates_card_tests PRIVATE LQ_QML_DIR="${PROJECT_SOURCE_DIR}")
+lq_set_compile_options(lq_updates_card_tests)
+add_test(NAME updates-card COMMAND lq_updates_card_tests)
+set_tests_properties(updates-card PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_QUICK_BACKEND=software")
+
 # The neural voice, on the downloaded model: it loads, speaks every voice the course uses, and can say every line.
 if(LQ_NEURAL_VOICE)
     add_executable(lq_voice_tests voice_tests.cpp)
@@ -117,6 +131,6 @@ if(LQ_NEURAL_VOICE)
 endif()
 
 if(WIN32)
-    set_property(TEST storage app certificates keyboard PROPERTY ENVIRONMENT_MODIFICATION
+    set_property(TEST storage app certificates keyboard updates-card PROPERTY ENVIRONMENT_MODIFICATION
         "PATH=path_list_prepend:${QT6_INSTALL_PREFIX}/${QT6_INSTALL_BINS}")
 endif()

@@ -47,6 +47,7 @@
 - [ ] Accessibility audit and localization review
 - [ ] Privacy review
 - [ ] Testing on supported macOS versions and architectures
-- [ ] Signing / notarization and release notes
+- [ ] Code signing for Windows and Apple (Developer ID and notarization); until then releases are unsigned, under the rules in [SECURITY.md](../SECURITY.md#unsigned-downloads)
+- [ ] Release notes for each version
 
 This roadmap is provisional. No release dates or proficiency guarantees are implied.
