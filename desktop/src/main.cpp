@@ -10,6 +10,7 @@
 #include <QCommandLineParser>
 #include <QDir>
 #include <QGuiApplication>
+#include <QLockFile>
 #include <QQmlApplicationEngine>
 #include <QQmlError>
 #include <QQuickWindow>
@@ -18,6 +19,7 @@
 #include <QTimer>
 
 #include <cstdlib>
+#include <memory>
 
 int main(int argc, char *argv[])
 {
@@ -93,6 +95,7 @@ int main(int argc, char *argv[])
     }
 
     // Declared before the engine, so QML never outlives the objects it binds to.
+    std::unique_ptr<QLockFile> learnerLock;
     lq::Database database;
     PreferencesController preferences(nullptr);
     PreferencesController::setInstance(&preferences);
@@ -107,14 +110,27 @@ int main(int argc, char *argv[])
     } else {
         const QString dir = parser.isSet(dataDir) ? parser.value(dataDir)
                                                   : QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-        if (QDir().mkpath(dir) && database.open(QDir(dir).filePath(QStringLiteral("learnquick.sqlite3")))) {
-            preferences.attach(&database);
-            profile.attach(&database);
-            learner.attach(&database);
-            certificates.attach(&database, dir);
+        if (!QDir().mkpath(dir)) {
+            profile.setError(QStringLiteral("The learner data directory could not be created: %1")
+                                 .arg(QDir::toNativeSeparators(dir)));
         } else {
-            profile.setError(QStringLiteral("Your learner data in %1 could not be opened. %2")
-                                 .arg(QDir::toNativeSeparators(dir), database.error()));
+            // SQLite transactions do not prevent last-writer-wins replacement of full learner snapshots.
+            // Keep one desktop process per data directory; demo mode does not touch persistent data.
+            learnerLock = std::make_unique<QLockFile>(QDir(dir).filePath(QStringLiteral("learnquick.lock")));
+            learnerLock->setStaleLockTime(0);
+            if (!learnerLock->tryLock(0)) {
+                qCritical("LearnQuick is already open for this learner data directory.");
+                return EXIT_FAILURE;
+            }
+            if (database.open(QDir(dir).filePath(QStringLiteral("learnquick.sqlite3")))) {
+                preferences.attach(&database);
+                profile.attach(&database);
+                learner.attach(&database);
+                certificates.attach(&database, dir);
+            } else {
+                profile.setError(QStringLiteral("Your learner data in %1 could not be opened. %2")
+                                     .arg(QDir::toNativeSeparators(dir), database.error()));
+            }
         }
     }
     if (parser.isSet(themeOption)) {
