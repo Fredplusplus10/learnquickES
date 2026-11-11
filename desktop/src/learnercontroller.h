@@ -44,6 +44,8 @@ public:
                       QObject *parent = nullptr);
 
     static QString bundledCoursePath();
+    // What to tell the learner when the database refuses a save: the cause in plain words, and what to do.
+    static QString saveProblem(const QString &databaseError);
 
     // Where progress is saved. Not called in demo mode or when the database could not be opened.
     void attach(lq::Database *database);
@@ -159,7 +161,7 @@ signals:
 
 private:
     void load();
-    void save();
+    bool save();
     void announce(const lq::Events &events);
     void setError(const QString &error);
     QVariantMap tipMap(const lq::CoachTip &tip) const;
@@ -174,4 +176,5 @@ private:
     std::optional<lq::LearnerState> m_state;
     std::optional<lq::ViewingFile> m_viewing;  // the history read last, until it is imported
     QString m_error;
+    QString m_saveProblem;  // why the last save failed; empty while saving works
 };

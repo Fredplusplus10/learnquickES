@@ -204,24 +204,65 @@ void LearnerController::load()
     emit changed();
 }
 
-void LearnerController::save()
+QString LearnerController::saveProblem(const QString &databaseError)
 {
+    const auto says = [&databaseError](const char *words) {
+        return databaseError.contains(QLatin1StringView(words), Qt::CaseInsensitive);
+    };
+    if (says("disk is full"))
+        return QStringLiteral("The disk is full. Free some space and try again.");
+    if (says("readonly") || says("read-only"))
+        return QStringLiteral("LearnQuick is not allowed to write to its data file. Check that its folder is not "
+                              "read-only and try again.");
+    if (says("locked") || says("busy"))
+        return QStringLiteral("Another program is using LearnQuick's data file. Close that program and try again.");
+    if (says("i/o error"))
+        return QStringLiteral("The disk reported an error while writing. Check the disk and try again.");
+    if (says("malformed") || says("not a database"))
+        return QStringLiteral("LearnQuick's data file is damaged. Close LearnQuick and open it again.");
+    return QStringLiteral("The data file could not be written (%1). Close LearnQuick and open it again.")
+        .arg(databaseError.trimmed());
+}
+
+bool LearnerController::save()
+{
+    // Nothing to write to: the sample learner is never saved, and progress that could not be read is left as it
+    // is (load() says so). Neither is a failed save.
     if (m_demo || !m_database || !m_state)
-        return;
+        return true;
+    // A file another program holds for a moment does not fail the save: SQLite keeps trying for as long as
+    // Qt's busy timeout (5 s). What fails here has failed for good.
     QString error;
-    if (!lq::saveLearner(m_database->connection(), *m_state, &error))
-        setError(QStringLiteral("Your progress could not be saved: %1").arg(error));
+    if (!lq::saveLearner(m_database->connection(), *m_state, &error)) {
+        m_saveProblem = saveProblem(error);
+        setError(QStringLiteral("Your progress could not be saved. %1").arg(m_saveProblem));
+        return false;
+    }
+    // Saving works again: the message about the save that failed goes away.
+    if (!m_saveProblem.isEmpty()) {
+        m_saveProblem.clear();
+        setError({});
+    }
+    return true;
 }
 
 void LearnerController::apply(const std::function<lq::Events(lq::LearnerState &)> &change)
 {
     if (!m_state)
         return;
+    const lq::LearnerState before = *m_state;
     lq::Events events = change(*m_state);
     const lq::ReviewSync sync = lq::syncReview(*m_state, day());
     events.insert(events.end(), sync.events.begin(), sync.events.end());
     const std::vector<lq::Achievement> earned = lq::checkAchievements(*m_state, day());
-    save();
+    if (!save()) {
+        // The screens show what is in the file and nothing else: what was just done is undone, nothing is
+        // celebrated, and the learner reads why.
+        *m_state = before;
+        setError(QStringLiteral("What you just did could not be saved, so it has been undone. %1").arg(m_saveProblem));
+        emit changed();
+        return;
+    }
     announce(events);
     for (const lq::Achievement &a : earned)
         emit celebrated(QStringLiteral("Achievement: ") + qs(a.title), qs(a.how), qs(a.icon));

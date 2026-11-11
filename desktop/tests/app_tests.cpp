@@ -18,12 +18,16 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QSqlDatabase>
+#include <QSqlQuery>
 #include <QTemporaryDir>
 #include <QVariantMap>
 
 #include <algorithm>
+#include <atomic>
 #include <chrono>
 #include <cmath>
+#include <thread>
 
 namespace {
 
@@ -1125,4 +1129,101 @@ TEST_CASE("the coach's snapshot says when there is too little to judge, and matc
     }
     CHECK(reviewTip == (due >= lq::kReviewPile));
     CHECK(skillTip == weak);
+}
+
+TEST_CASE("what cannot be saved is undone, and the learner is told why", "[app]")
+{
+    QTemporaryDir dir;
+    REQUIRE(dir.isValid());
+    const QString path = dir.filePath(QStringLiteral("learnquick.sqlite3"));
+    const QDate today(2026, 11, 2);
+    {
+        lq::Database db;
+        REQUIRE(db.open(path));
+        ProfileController profile(today);
+        profile.attach(&db);
+        REQUIRE(profile.save(QStringLiteral("Cory"), kReason, {}, QStringLiteral("A2"), 30));
+        LearnerController learner(&profile, today, false, kCourse);
+        learner.attach(&db);
+        int celebrations = 0;
+        QObject::connect(&learner, &LearnerController::celebrated, &learner, [&celebrations] { ++celebrations; });
+
+        learner.finishLesson(0, 1.0, 0);
+        REQUIRE(learner.state().units.size() == 1);
+        CHECK(learner.error().isEmpty());
+        const int xp = learner.state().activity.at(learner.day()).xp;
+        const int before = celebrations;
+
+        // The database refuses every write, as on a folder that became read-only.
+        REQUIRE(QSqlQuery(db.connection()).exec(QStringLiteral("PRAGMA query_only = ON")));
+        learner.finishLesson(1, 1.0, 0);
+        CHECK(learner.state().units.size() == 1);  // the screens show what is in the file
+        CHECK(learner.state().activity.at(learner.day()).xp == xp);
+        CHECK(celebrations == before);  // and nothing that was not saved is celebrated
+        CHECK(learner.error().startsWith(QStringLiteral("What you just did could not be saved, so it has been undone.")));
+        CHECK(learner.error().contains(QStringLiteral("not allowed to write to its data file")));
+
+        // Once writing works, the lesson is done again and saved, and the message goes away.
+        REQUIRE(QSqlQuery(db.connection()).exec(QStringLiteral("PRAGMA query_only = OFF")));
+        learner.finishLesson(1, 1.0, 0);
+        CHECK(learner.state().units.size() == 2);
+        CHECK(learner.error().isEmpty());
+    }
+    lq::Database db;
+    REQUIRE(db.open(path));
+    const auto stored = lq::loadLearner(db.connection(), lq::Plan{});
+    REQUIRE(stored.has_value());
+    CHECK(stored->units.size() == 2);
+}
+
+TEST_CASE("a save waits out the moment another program holds the file", "[app]")
+{
+    QTemporaryDir dir;
+    REQUIRE(dir.isValid());
+    const QString path = dir.filePath(QStringLiteral("learnquick.sqlite3"));
+    const QDate today(2026, 11, 2);
+    lq::Database db;
+    REQUIRE(db.open(path));
+    ProfileController profile(today);
+    profile.attach(&db);
+    REQUIRE(profile.save(QStringLiteral("Cory"), kReason, {}, QStringLiteral("A2"), 30));
+    LearnerController learner(&profile, today, false, kCourse);
+    learner.attach(&db);
+
+    // Another program takes the file for writing and lets go a moment later.
+    std::atomic<int> held{0};
+    std::thread other([&path, &held] {
+        {
+            QSqlDatabase file = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), QStringLiteral("another-program"));
+            file.setDatabaseName(path);
+            QSqlQuery query(file);
+            held = file.open() && query.exec(QStringLiteral("BEGIN IMMEDIATE")) ? 1 : -1;
+            std::this_thread::sleep_for(std::chrono::milliseconds(200));
+            query.exec(QStringLiteral("COMMIT"));
+            query.clear();
+            file.close();
+        }
+        QSqlDatabase::removeDatabase(QStringLiteral("another-program"));
+    });
+    while (held == 0)
+        std::this_thread::yield();
+    learner.finishLesson(0, 1.0, 0);
+    other.join();
+    REQUIRE(held == 1);
+    CHECK(learner.state().units.size() == 1);
+    CHECK(learner.error().isEmpty());
+    const auto stored = lq::loadLearner(db.connection(), lq::Plan{});
+    REQUIRE(stored.has_value());
+    CHECK(stored->units.size() == 1);
+}
+
+TEST_CASE("a failed save is explained by its cause", "[app]")
+{
+    const auto problem = [](const char *databaseError) { return LearnerController::saveProblem(QString::fromLatin1(databaseError)); };
+    CHECK(problem("database or disk is full Unable to fetch row").startsWith(QStringLiteral("The disk is full.")));
+    CHECK(problem("attempt to write a readonly database Unable to fetch row").startsWith(QStringLiteral("LearnQuick is not allowed to write")));
+    CHECK(problem("database is locked Unable to fetch row").startsWith(QStringLiteral("Another program is using")));
+    CHECK(problem("disk I/O error Unable to fetch row").startsWith(QStringLiteral("The disk reported an error")));
+    CHECK(problem("database disk image is malformed").startsWith(QStringLiteral("LearnQuick's data file is damaged.")));
+    CHECK(problem(" something new ") == QStringLiteral("The data file could not be written (something new). Close LearnQuick and open it again."));
 }
