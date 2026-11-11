@@ -6,6 +6,10 @@
   const synth = 'speechSynthesis' in root ? root.speechSynthesis : null;
   const SR = root.SpeechRecognition || root.webkitSpeechRecognition || null;
   const localRecognition = !!(SR && SR.prototype && 'processLocally' in SR.prototype);
+  // "Check words" is announced, not offered yet. Recognition on the device needs a Spanish language pack that
+  // browsers do not bring (Chrome 157 has it as a download, Edge 157 does not have it), and the app cannot
+  // install it yet: every try ended in "language-not-supported". True once the app can.
+  const RECOGNITION_READY = false;
   let voices = [];
   const norm = s => String(s || '').replace('_', '-').toLowerCase();
   function loadVoices() { if (synth) voices = synth.getVoices().filter(v => /^es(-|$)/.test(norm(v.lang))); }
@@ -85,5 +89,5 @@
   }
 
 
-  LQ.speech = { speak, stop, pickVoice, voices: () => voices, hasTTS: !!synth, hasRecognition: localRecognition, recognize, compare, canRecord, record };
+  LQ.speech = { speak, stop, pickVoice, voices: () => voices, hasTTS: !!synth, hasRecognition: RECOGNITION_READY && localRecognition, recognitionSoon: !RECOGNITION_READY && !!SR, recognize, compare, canRecord, record };
 })(typeof window !== 'undefined' ? window : globalThis);

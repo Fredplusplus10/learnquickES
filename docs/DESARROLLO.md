@@ -82,7 +82,7 @@ Se desarrolló y probó en Windows con Chrome; estas cosas solo se pueden confir
 
 1. **Safari y `file://`:** que el progreso se guarde tras cerrar y reabrir. Si Safari lo borrase, la copia de seguridad semanal lo recupera; la solución definitiva es la app nativa (`desktop/`), que guardará el progreso en disco.
 2. **Voces:** instalar una voz española mejorada (Ajustes del Sistema → Accesibilidad → Contenido leído → Voz del sistema → Gestionar voces → Español). Probar en *Settings → Voice → Play a sample*.
-3. **Micrófono:** «Record me» y «Check words» dependen del navegador. En Chrome no funcionan desde `file://`; en Safari deberían. El reconocimiento de Safari envía el audio a Apple. Si no hay micrófono, «Listen & repeat» cubre la práctica oral.
+3. **Micrófono:** «Record me» depende del navegador. En Chrome no funciona desde `file://`; en Safari debería. Si no hay micrófono, «Listen & repeat» cubre la práctica oral. «Check words» se muestra como «coming soon»: el reconocimiento solo se pide en el dispositivo (`processLocally`), y eso necesita un paquete de idioma español que el navegador no trae (Chrome 157 lo ofrece como descarga, Edge 157 no lo tiene). Se activa con `RECOGNITION_READY` en `app/js/ui/speech.js` cuando la app pueda ofrecer esa descarga.
 4. **Emoji de bandera:** en Windows se ve «ES»; en macOS se ve la bandera.
 
 ## App nativa (C++20 + Qt 6)

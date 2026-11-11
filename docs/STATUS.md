@@ -20,7 +20,7 @@ What the **web application in `app/`** includes today, and what it leaves out. T
 
 - A finished native macOS `.app`, code signing or notarization. The C++20 + Qt 6 app in `desktop/` is at phase 3: the daily plan runs end to end (lessons, review, trainers, checkpoints, B1 mock); the browsing screens and backup import come in phase 4; CI builds it unsigned.
 - SQLite persistence (planned for the native app), user accounts or cloud sync (by design: single learner, local only).
-- Automatic pronunciation assessment. Recording and browser speech recognition appear only where the browser supports them, and no score is invented.
+- Automatic pronunciation assessment. Recording appears only where the browser supports it, browser speech recognition is shown as coming soon, and no score is invented.
 - Adaptive sequencing. The plan is fixed; the only adaptation is that wrong answers come back later in the session and checkpoints point to weak units.
 - Independent validation of learning outcomes, or a formal accessibility audit.
 - Testing on a real Mac. It was developed and tested on Windows with headless Chrome. Safari storage on `file://`, installed voices and microphone access still have to be checked on the learner's Mac.

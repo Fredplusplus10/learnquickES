@@ -59,7 +59,8 @@ LearnQuick is for any English speaker who wants functional Spanish: each person 
 | Checkpoints and B1 mock exam | Implemented | 15-question checkpoint per phase; final mock modelled on DELE B1 (writing and speaking partly self-assessed) |
 | Spanish text-to-speech | Browser-dependent | `SpeechSynthesis` with installed macOS voices; Mexican Spanish by default, configurable |
 | Built-in neural voice | Implemented (native app) | A natural Spanish voice (Supertonic 2) that ships with the app and works offline, the same on Windows and Mac, at a pace for learners, with a voice for each dialogue character; the learner picks their own voice (six) and its normal and slow speed in Settings; "a / b" is read "a o b" and "305" "trescientos cinco" |
-| Recording and speech recognition | Browser-dependent | Shown only when the browser allows it; no pronunciation score is ever invented. “Listen & repeat” works everywhere |
+| Recording | Browser-dependent | Shown only when the browser allows it; no pronunciation score is ever invented. “Listen & repeat” works everywhere |
+| Speech recognition (“Check words”) | Coming soon | Shown as coming soon. It will run on the device only, once the app can offer the browser's Spanish language pack |
 | Persistence | Implemented (browser) | `localStorage` with versioned schema, weekly backup reminder, JSON export/import |
 | Calendar reminder | Implemented | Downloads a repeating `.ics` event for the study days |
 | Native app for macOS and Windows | In progress | C++20 + Qt 6 in [`desktop/`](desktop/README.md). CI builds an unsigned universal `.dmg` (not notarized) and a Windows folder with the `.exe` |
@@ -186,7 +187,7 @@ For the native app, a second workflow runs whenever `desktop/` changes:
 
 ## Privacy and distribution
 
-The app includes no external fonts, SDKs, analytics or telemetry, and makes no network requests. Progress stays in the browser's local storage on the learner's Mac and can be exported as a JSON file. Links to external resources (podcasts, Tandem, HelloTalk) open only when the learner clicks them. If the browser offers speech recognition, it may rely on the vendor's online service; the feature is optional.
+The app includes no external fonts, SDKs, analytics or telemetry, and makes no network requests. Progress stays in the browser's local storage on the learner's Mac and can be exported as a JSON file. Links to external resources (podcasts, Tandem, HelloTalk) open only when the learner clicks them. Recordings are played back from memory and never leave the device. Speech recognition is not offered yet; when it is, the app will ask the browser to run it on the device only.
 
 ## License
 

@@ -102,7 +102,7 @@
         <button type="button" class="secondary-btn" data-speak="${esc(phrase)}" data-rate="0.65">${ico('turtle')}${L('Slow', 'Lento')}</button>
         <button type="button" class="secondary-btn" data-action="shadow-repeat" data-target="${id}">${ico('refresh')}${L('Listen & repeat', 'Escucha y repite')}</button>
         ${LQ.speech.canRecord() ? `<button type="button" class="secondary-btn" data-action="shadow-record" data-target="${id}">${ico('mic')}${L('Record me', 'Grabarme')}</button>` : ''}
-        ${LQ.speech.hasRecognition ? `<button type="button" class="secondary-btn" data-action="shadow-recognize" data-target="${id}">${ico('waveform')}${L('Check words', 'Comprobar')}</button>` : ''}
+        ${LQ.speech.hasRecognition ? `<button type="button" class="secondary-btn" data-action="shadow-recognize" data-target="${id}">${ico('waveform')}${L('Check words', 'Comprobar')}</button>` : LQ.speech.recognitionSoon ? `<button type="button" class="secondary-btn" disabled>${ico('waveform')}${L('Check words · coming soon', 'Comprobar · próximamente')}</button>` : ''}
       </div>
       <div class="shadow-out" aria-live="polite"></div>
     </div>`;
