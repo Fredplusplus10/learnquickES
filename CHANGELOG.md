@@ -1,8 +1,21 @@
 # Changelog
 
+## 0.4.7 — 2026-11-11
+
+The first downloads published. It includes every change of 0.4.6 (see the [changelog](CHANGELOG.md)), which was tagged the same day and never published as a download.
+
+### Added
+
+- Desktop app: **Settings → Updates** shows the version and asks the learner to check for a new one every 15 days, and says why: the app never connects to the internet, so it cannot look by itself.
+- The README opens with the downloads: one link for Windows and one for Mac that always fetch the latest version, the four steps to install each, and how to learn about new versions.
+
+### Changed
+
+- A version tag is refused unless the README names that version as the latest.
+
 ## 0.4.6 — 2026-11-11
 
-The first public release. It closes an outside review of how both apps keep, restore and protect a learner's progress.
+The first version in the public repository. It closes an outside review of how both apps keep, restore and protect a learner's progress.
 
 ### Added
 

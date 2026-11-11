@@ -6,9 +6,30 @@
 
 **An offline-first Spanish learning app for macOS and Windows: a personal 30-, 60- or 90-study-day plan towards functional B1 Spanish, with a Duolingo-style streak.**
 
+## Download
+
+**Latest version: 0.4.7.** It is free, and you do not need a GitHub account.
+
+| | Windows 10 or 11 | Mac (macOS 14.4 or later, Apple Silicon or Intel) |
+| --- | --- | --- |
+| **1. Download** | [**LearnQuick for Windows**](https://github.com/Fredplusplus10/learnquickES/releases/latest/download/LearnQuick-windows.zip) | [**LearnQuick for Mac**](https://github.com/Fredplusplus10/learnquickES/releases/latest/download/LearnQuick-macos.zip) |
+| **2. Unpack** | Right-click the downloaded zip → **Extract All…** | Double-click the downloaded zip, open **LearnQuick.dmg** and drag **LearnQuick** onto **Applications** |
+| **3. Open** | In the extracted folder, open **bin** and double-click **LearnQuick.exe** | Open **LearnQuick** from Applications |
+| **4. The first time** | A blue window says *Windows protected your PC*: click **More info → Run anyway** | macOS says it *could not verify "LearnQuick"*: click **Done**, open **System Settings → Privacy & Security**, scroll down and click **Open Anyway** |
+
+The warning in step 4 appears because LearnQuick is not signed with a paid certificate yet, not because anything harmful was found. The download is about 300 MB. Every step in detail, and what to do if something does not work: [Installing LearnQuick](docs/INSTALL.md).
+
+### Getting a new version
+
+LearnQuick never connects to the internet, so **it cannot update itself or tell you that a new version exists**. To stay up to date:
+
+- **About every 15 days**, open **Settings → Updates** in the app. It shows the version you have, and **Download latest version** opens this project's download page. If the version there is newer than yours, download it and install it as above; your progress carries over.
+- Or come back to this page: the latest version is always named at the top of this section, and the two links above always download it.
+- If you have a GitHub account, **Watch → Custom → Releases** at the top of this page sends you an email for each new version.
+
 LearnQuick is for any English speaker who wants functional Spanish: each person installs it, answers a short welcome and gets their own plan. Its first learner is an English speaker on a MacBook. Each day combines a short session in the app (review, a lesson or a trainer, speaking out loud) with Spanish input outside it (podcasts, series, conversation). The app tracks both.
 
-> **Current status: working local web app (v1.0); native app in progress.** The web app is a dependency-free HTML/CSS/JavaScript application that runs from a double-click, with no server, account or network connection. The native desktop app is being built in C++20 + Qt 6 in [`desktop/`](desktop/README.md). It is at phase 4 of 5: the whole daily plan runs natively (lessons, spaced-repetition review, the eight trainers, phase checkpoints and the B1 mock), with progress in SQLite, a built-in neural Spanish voice, a guiding coach that asks every few sessions what the learner enjoyed, and screens for words, immersion and progress with achievements, built for Windows and macOS in CI (see [roadmap](docs/ROADMAP.md)).
+> **Current status: a desktop app for Windows and macOS (downloads above) and a web app (v1.0).** The web app is a dependency-free HTML/CSS/JavaScript application that runs from a double-click, with no server, account or network connection. The native desktop app is built in C++20 + Qt 6 in [`desktop/`](desktop/README.md). It is at phase 4 of 5: the whole daily plan runs natively (lessons, spaced-repetition review, the eight trainers, phase checkpoints and the B1 mock), with progress in SQLite, a built-in neural Spanish voice, a guiding coach that asks every few sessions what the learner enjoyed, and screens for words, immersion and progress with achievements, built for Windows and macOS in CI (see [roadmap](docs/ROADMAP.md)).
 
 ## Interface preview
 

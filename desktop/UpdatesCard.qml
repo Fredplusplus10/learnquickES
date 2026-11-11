@@ -10,12 +10,13 @@ Card {
 
     title: "Updates"
     icon: "download"
-    subtitle: "You have version " + version
+    subtitle: "Version " + version + " · Check every 15 days for updates"
 
     Text {
         Layout.fillWidth: true
-        text: "New versions of LearnQuick are published on GitHub. The page opens in your browser, and your "
-              + "progress carries over when you update."
+        text: "LearnQuick never connects to the internet, so it cannot tell you about a new version. About every "
+              + "15 days, press the button: it opens the developer's GitHub page in your browser. If the version "
+              + "there is newer than " + version + ", download it. Your progress carries over when you update."
         color: Theme.muted
         font.pixelSize: 14
         wrapMode: Text.WordWrap

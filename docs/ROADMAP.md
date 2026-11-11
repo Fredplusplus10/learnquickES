@@ -33,7 +33,7 @@
 - [x] Settings (0.3.6): day and night mode, the learner's own voice out of six (dialogue characters keep theirs) and its normal and slow speed; a less robotic voice
 - [x] Phase 4 (0.4.0): browsing screens (practice hub, words with search, progress with achievements and signs of B1); immersion log with listening milestones; a backup compatible with the web app's
 - [x] Voice fixes (0.4.5): every voice at the same pace and loudness, pauses between sentences, a noise seed per voice, M2 as narrator and learner
-- [x] First public release (0.4.6): fixes from an outside review of saving, restoring and backups; a download button in Settings; releases with `SHA256SUMS.txt` built from a version tag
+- [x] First public release (0.4.6 in the repository, 0.4.7 as downloads): fixes from an outside review of saving, restoring and backups; a download button in Settings with a reminder to check for updates every 15 days; releases with `SHA256SUMS.txt` built from a version tag
 - [ ] Web app: offer the browser's Spanish language pack so *Check words* can run on the device
 - [ ] Desktop app: tell the learner when LearnQuick is already open instead of closing without a word; sharper icons at small sizes
 - [ ] Phase 5: on-device speech recognition (whisper.cpp) and conversation practice (llama.cpp) that uses the learner's stated reason as context; microphone usage descriptions

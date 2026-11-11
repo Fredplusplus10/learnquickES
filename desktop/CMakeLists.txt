@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.22)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "14.4" CACHE STRING "Oldest macOS LearnQuick runs on")
 
 project(LearnQuick
-    VERSION 0.4.6
+    VERSION 0.4.7
     DESCRIPTION "LearnQuick native desktop app"
     LANGUAGES CXX)
 

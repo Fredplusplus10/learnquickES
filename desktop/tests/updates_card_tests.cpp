@@ -109,7 +109,9 @@ TEST_CASE("the card opens nothing by itself, and one click opens the latest rele
     withScene([](Scene &s, FakeBrowser &browser) {
         QCoreApplication::processEvents();
         CHECK(browser.opened.isEmpty());
-        CHECK(s.card->property("subtitle").toString() == QStringLiteral("You have version 1.2.3"));
+        // The version the learner has, and how often to look for a newer one: the app cannot look by itself.
+        CHECK(s.card->property("subtitle").toString()
+              == QStringLiteral("Version 1.2.3 · Check every 15 days for updates"));
         CHECK(s.button->isEnabled());
 
         s.click();

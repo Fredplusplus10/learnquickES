@@ -60,6 +60,9 @@ def notes(tag: str) -> str:
     version = app_version()
     if tag != f"v{version}":
         fail(f"the tag is {tag}, but desktop/CMakeLists.txt says the app is version {version} (expected v{version})")
+    # The README is where most people download from: it must name the version that is about to be published.
+    if f"**Latest version: {version}.**" not in (ROOT / "README.md").read_text(encoding="utf-8"):
+        fail(f"README.md does not say '**Latest version: {version}.**' in its Download section")
     template = (ROOT / "docs" / "RELEASE_NOTES_TEMPLATE.md").read_text(encoding="utf-8")
     # Everything above the rule explains the template; the notes are what follows it.
     _, rule, text = template.partition("\n---\n")

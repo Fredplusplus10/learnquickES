@@ -1,6 +1,6 @@
 # Dependency review
 
-[SECURITY.md](../SECURITY.md) asks for this review before each public release. This one is for **LearnQuick 0.4.6**, done on **2026-11-11**.
+[SECURITY.md](../SECURITY.md) asks for this review before each public release. This one is for **LearnQuick 0.4.6 and 0.4.7**, which ship the same dependencies, done on **2026-11-11**.
 
 **Result: nothing blocks the release.** Published advisories exist for the versions of Qt, FFmpeg, SQLite and ONNX Runtime that the desktop app ships. Each of them needs a crafted file to reach the affected code, and the app gives that code only files that come inside the app. Three updates are due and are listed under [Follow-up](#follow-up).
 
