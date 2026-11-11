@@ -122,8 +122,10 @@
   async function shadowRecord(box, btn) {
     const out = box.querySelector('.shadow-out');
     if (box._rec) { box._rec.stop(); return; }
+    let started = false;
     try {
       box._rec = await LQ.speech.record(12000);
+      started = true;
       btn.classList.add('recording'); btn.lastChild.textContent = L('Stop', 'Parar');
       out.innerHTML = `<span class="pill-note">${L('Recording… say the phrase.', 'Grabando… di la frase.')}</span>`;
       const url = await box._rec.done;
@@ -131,7 +133,9 @@
       out.innerHTML = `<div class="compare"><span>${L('You:', 'Tú:')}</span><audio controls src="${url}"></audio><button type="button" class="secondary-btn" data-speak="${esc(box.dataset.phrase)}">${ico('speaker')}${L('Model', 'Modelo')}</button></div><span class="pill-note">${L('Compare your vowels and rhythm with the model.', 'Compara tus vocales y tu ritmo con el modelo.')}</span>`;
     } catch (e) {
       box._rec = null;
-      out.innerHTML = `<span class="pill-note bad">${L('Recording is not available here (the browser blocked the microphone). Use "Listen & repeat" — it works everywhere. Safari usually allows recording; Chrome does not when the app is opened as a file.', 'La grabación no está disponible aquí (el navegador bloqueó el micrófono). Usa «Escucha y repite», que funciona siempre. Safari suele permitir grabar; Chrome no, si la app se abre como archivo.')}</span>`;
+      // A recording that fails after it began has already let go of the microphone: the button says so too.
+      btn.classList.remove('recording'); btn.lastChild.textContent = L('Record me', 'Grabarme');
+      out.innerHTML = started ? `<span class="pill-note bad">${L('The recording stopped because of a microphone error. Try again, or use "Listen & repeat".', 'La grabación se detuvo por un error del micrófono. Inténtalo de nuevo o usa «Escucha y repite».')}</span>` : `<span class="pill-note bad">${L('Recording is not available here (the browser blocked the microphone). Use "Listen & repeat" — it works everywhere. Safari usually allows recording; Chrome does not when the app is opened as a file.', 'La grabación no está disponible aquí (el navegador bloqueó el micrófono). Usa «Escucha y repite», que funciona siempre. Safari suele permitir grabar; Chrome no, si la app se abre como archivo.')}</span>`;
     }
   }
   function shadowRecognize(box) {
