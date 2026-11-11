@@ -12,7 +12,17 @@
   const NAV_OF = { lesson: 'lessons', checkpoint: 'lessons' };
   let cleanup = null, lastRoute = null, day = null, lastInteraction = Date.now();
 
-  const save = () => LQ.store.save(LQ.state);
+  let warnedAboutSave = false;
+  const save = () => {
+    const ok = LQ.store.save(LQ.state);
+    if (!ok && !warnedAboutSave && LQ.ui && LQ.ui.toast) {
+      warnedAboutSave = true;
+      LQ.ui.toast(L('Progress could not be saved. Another tab may have changed it, or browser storage is unavailable. Export a backup before reloading.',
+        'No se pudo guardar el progreso. Puede haber cambios de otra pestaña o el almacenamiento no está disponible. Exporta una copia antes de recargar.'));
+    }
+    if (ok) warnedAboutSave = false;
+    return ok;
+  };
   function parseHash() { const key = location.hash.replace(/^#\/?/, ''), [name, ...rest] = key.split('/'); return { key, name, param: rest.join('/') || null }; }
   function go(route) { const target = '#/' + route; LQ.ui.closeModal(); if (location.hash === target || (!location.hash && !route)) { lastRoute = null; render(); } else location.hash = target; }
 
@@ -82,7 +92,7 @@
     if (events.some(e => e.type !== 'achievement')) handle(P.checkAchievements(S, U.today()));
     chrome();
   }
-  function replaceState(S) { LQ.state = P.migrate(S, U.today()); LQ.island.active = false; save(); lastRoute = null; }
+  function replaceState(S) { const next = P.migrate(S, U.today()); if (!LQ.store.replace(next)) throw new Error('Could not save the restored progress'); LQ.state = next; LQ.island.active = false; warnedAboutSave = false; lastRoute = null; }
 
   // ---- ⌘K search across lessons, words and trainers ----------------------------------------------------------
   let index = null, results = [], cursor = 0;
