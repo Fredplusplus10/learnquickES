@@ -8,7 +8,7 @@
 
 ## Download
 
-**Latest version: 0.4.7.** It is free, and you do not need a GitHub account.
+**Latest version: 1.4.6.** It is free, and you do not need a GitHub account.
 
 | | Windows 10 or 11 | Mac (macOS 14.4 or later, Apple Silicon or Intel) |
 | --- | --- | --- |

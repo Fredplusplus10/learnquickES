@@ -69,7 +69,10 @@ jobs:
         run: cmake -S desktop -B build -DCMAKE_BUILD_TYPE=Release ${{ matrix.cmake-args }}
 
       - name: Build
-        run: cmake --build build --config Release --parallel
+        # A number, always: without one, make on macOS puts no limit on how many compilers it starts. A macOS
+        # build once stopped answering in this step and was cancelled at 25 minutes; its log was lost, so this
+        # is the likely cause, not a proven one.
+        run: cmake --build build --config Release --parallel 4
 
       - name: Tests (build tree)
         # Engine, storage and view-model tests, parity with the web app, and a headless smoke test per screen.

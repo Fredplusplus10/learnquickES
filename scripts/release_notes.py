@@ -1,6 +1,6 @@
 """Writes the notes of a release, and refuses a tag the repository is not ready for.
 
-Run from any directory: python3 scripts/release_notes.py v0.4.6
+Run from any directory: python3 scripts/release_notes.py v1.4.6
 
 The notes are docs/RELEASE_NOTES_TEMPLATE.md with the version filled in and "What changed in this version."
 replaced by that version's section of CHANGELOG.md. SECURITY.md ("Unsigned downloads") says why every release
@@ -73,6 +73,6 @@ def notes(tag: str) -> str:
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        fail("usage: release_notes.py <tag>, for example v0.4.6")
+        fail("usage: release_notes.py <tag>, for example v1.4.6")
     sys.stdout.reconfigure(encoding="utf-8", newline="\n")
     sys.stdout.write(notes(sys.argv[1]))

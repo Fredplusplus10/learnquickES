@@ -1,6 +1,6 @@
 # Dependency review
 
-[SECURITY.md](../SECURITY.md) asks for this review before each public release. This one is for **LearnQuick 0.4.6 and 0.4.7**, which ship the same dependencies, done on **2026-11-11**.
+[SECURITY.md](../SECURITY.md) asks for this review before each public release. This one is for **LearnQuick 1.4.6**, done on **2026-11-11**.
 
 **Result: nothing blocks the release.** Published advisories exist for the versions of Qt, FFmpeg, SQLite and ONNX Runtime that the desktop app ships. Each of them needs a crafted file to reach the affected code, and the app gives that code only files that come inside the app. Three updates are due and are listed under [Follow-up](#follow-up).
 
@@ -23,7 +23,7 @@
 | Supertonic 2 voice model | commit `75e6727` | commit and SHA-256 of each file | BigScience Open RAIL-M | None found | Data, not code |
 | nlohmann/json | 3.12.0 | version and SHA-256 | MIT | None found; it is the latest release | Yes, by design: it reads backups (see below) |
 
-**nlohmann/json reads outside data.** A backup comes from the learner or from someone else. The app refuses a file over 8 MB before parsing, catches every parsing error, and since 0.4.6 refuses a backup of the wrong shape or with a number that is negative or does not fit.
+**nlohmann/json reads outside data.** A backup comes from the learner or from someone else. The app refuses a file over 8 MB before parsing, catches every parsing error, and since 1.4.6 refuses a backup of the wrong shape or with a number that is negative or does not fit.
 
 ## Used to build and test, not shipped
 

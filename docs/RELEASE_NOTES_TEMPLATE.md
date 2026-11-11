@@ -15,6 +15,10 @@ What changed in this version.
 
 This page is the only official place to download LearnQuick. Your progress carries over when you update.
 
+### Check for updates every 15 days
+
+LearnQuick never connects to the internet, so it cannot update itself or tell you that a new version exists. About every 15 days, come back to this page, or open **Settings → Updates → Download latest version** in the app: if the version here is newer than yours, download it. Your progress carries over.
+
 ### Check your download
 
 `SHA256SUMS.txt` holds the fingerprint of each file. Run this in the folder that holds your download and compare the result with that file:
