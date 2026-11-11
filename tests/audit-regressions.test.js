@@ -24,6 +24,17 @@ test('a damaged stored document is not overwritten on app startup', () => {
   assert.equal(JSON.parse(disk.raw).profile.name, 'Fallback only');
 });
 
+test('a second tab cannot silently overwrite progress changed elsewhere', () => {
+  const disk = storage(JSON.stringify(state()));
+  const loaded = LQ.store.load();
+  const elsewhere = state();
+  elsewhere.profile.name = 'Saved in other tab';
+  disk.raw = JSON.stringify(elsewhere);
+  loaded.profile.name = 'Stale tab';
+  assert.equal(LQ.store.save(loaded), false);
+  assert.equal(JSON.parse(disk.raw).profile.name, 'Saved in other tab');
+});
+
 test('a failed write preserves the last successfully saved snapshot', () => {
   const disk = storage(null);
   const s = LQ.store.load();

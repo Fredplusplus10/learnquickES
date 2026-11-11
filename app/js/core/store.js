@@ -8,6 +8,7 @@
   const KEY = demo ? 'learnquick.demo.v1' : 'learnquick.v1';
   let available = true;
   let writeBlocked = false;
+  let lastSeenRaw = null;
 
   const object = v => !!v && typeof v === 'object' && !Array.isArray(v);
   // A malformed localStorage document is not an empty learner. Do not overwrite it on startup.
@@ -20,6 +21,7 @@
     const today = U.today();
     try {
       const raw = localStorage.getItem(KEY);
+      lastSeenRaw = raw;
       if (raw !== null) {
         const parsed = JSON.parse(raw);
         if (!validState(parsed)) throw new Error('invalid or unsupported stored state');
@@ -35,11 +37,20 @@
     }
     return demo ? demoState(today) : P.defaultState(today);
   }
+  // Compare with the last snapshot read/written by this tab. Another tab must not be silently overwritten.
   function save(S, replaceExisting = false) {
     if (writeBlocked && !replaceExisting) return false;
     try {
+      const current = localStorage.getItem(KEY);
+      if (!replaceExisting && current !== lastSeenRaw) {
+        writeBlocked = true;
+        available = false;
+        console.warn('LearnQuick: another tab changed the progress; not overwriting it');
+        return false;
+      }
       const next = JSON.stringify(S);
       localStorage.setItem(KEY, next);
+      lastSeenRaw = next;
       writeBlocked = false;
       available = true;
       return true;
