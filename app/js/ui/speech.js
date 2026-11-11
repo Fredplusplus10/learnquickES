@@ -67,13 +67,23 @@
   // Records until stop() or maxMs; resolves with an object URL to play back. Audio never leaves the device.
   async function record(maxMs = 12000) {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    const rec = new MediaRecorder(stream), chunks = [];
+    const release = () => stream.getTracks().forEach(t => t.stop());
+    let rec;
+    try { rec = new MediaRecorder(stream); }
+    catch (e) { release(); throw e; }
+    const chunks = [];
     rec.ondataavailable = e => e.data.size && chunks.push(e.data);
-    const done = new Promise(resolve => { rec.onstop = () => { stream.getTracks().forEach(t => t.stop()); resolve(URL.createObjectURL(new Blob(chunks, { type: rec.mimeType || 'audio/webm' }))); }; });
-    rec.start();
-    const timer = setTimeout(() => rec.state === 'recording' && rec.stop(), maxMs);
+    const done = new Promise((resolve, reject) => {
+      rec.onstop = () => { release(); resolve(URL.createObjectURL(new Blob(chunks, { type: rec.mimeType || 'audio/webm' }))); };
+      rec.onerror = e => { release(); reject(e.error || new Error('Microphone recording failed')); };
+    });
+    try { rec.start(); }
+    catch (e) { release(); throw e; }
+    const timer = setTimeout(() => { if (rec.state === 'recording') rec.stop(); }, Math.max(1000, Math.min(60000, maxMs)));
+    done.finally(() => clearTimeout(timer)).catch(() => {});
     return { stop() { clearTimeout(timer); if (rec.state === 'recording') rec.stop(); }, done };
   }
+
 
   LQ.speech = { speak, stop, pickVoice, voices: () => voices, hasTTS: !!synth, hasRecognition: localRecognition, recognize, compare, canRecord, record };
 })(typeof window !== 'undefined' ? window : globalThis);
