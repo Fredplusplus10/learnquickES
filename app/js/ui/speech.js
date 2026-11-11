@@ -5,6 +5,7 @@
   const LQ = root.LQ;
   const synth = 'speechSynthesis' in root ? root.speechSynthesis : null;
   const SR = root.SpeechRecognition || root.webkitSpeechRecognition || null;
+  const localRecognition = !!(SR && SR.prototype && 'processLocally' in SR.prototype);
   let voices = [];
   const norm = s => String(s || '').replace('_', '-').toLowerCase();
   function loadVoices() { if (synth) voices = synth.getVoices().filter(v => /^es(-|$)/.test(norm(v.lang))); }
@@ -44,8 +45,10 @@
 
   // Speech recognition: shows what the computer understood. It is NOT a pronunciation score.
   function recognize(onResult, onError) {
-    if (!SR) { onError('unsupported'); return null; }
+    // Older browser engines may send transcripts to a remote provider. This app is offline-first.
+    if (!localRecognition) { onError('local-unavailable'); return null; }
     const r = new SR();
+    r.processLocally = true;
     r.lang = LQ.state.profile.accent; r.interimResults = false; r.maxAlternatives = 3;
     r.onresult = e => onResult(Array.from(e.results[0]).map(a => a.transcript));
     r.onerror = e => onError(e.error || 'error');
@@ -72,5 +75,5 @@
     return { stop() { clearTimeout(timer); if (rec.state === 'recording') rec.stop(); }, done };
   }
 
-  LQ.speech = { speak, stop, pickVoice, voices: () => voices, hasTTS: !!synth, hasRecognition: !!SR, recognize, compare, canRecord, record };
+  LQ.speech = { speak, stop, pickVoice, voices: () => voices, hasTTS: !!synth, hasRecognition: localRecognition, recognize, compare, canRecord, record };
 })(typeof window !== 'undefined' ? window : globalThis);
