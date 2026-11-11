@@ -45,3 +45,13 @@ test('a failed write preserves the last successfully saved snapshot', () => {
   assert.equal(LQ.store.save(s), false);
   assert.equal(disk.raw, old);
 });
+
+test('backup validation rejects unrelated files and incompatible schemas', () => {
+  const s = state();
+  const backup = x => JSON.stringify({ app: 'LearnQuick', state: x });
+  assert.equal(LQ.store.parseBackup(backup(s)).version, 1);
+  assert.throws(() => LQ.store.parseBackup(JSON.stringify({ app: 'Other', state: s })), /not a LearnQuick backup/);
+  assert.throws(() => LQ.store.parseBackup(backup({ ...s, version: 2 })), /not a supported/);
+  assert.throws(() => LQ.store.parseBackup(backup({ ...s, plan: { ...s.plan, start: '2026-02-31' } })), /not a supported/);
+  assert.throws(() => LQ.store.parseBackup(backup({ ...s, done: {} })), /Damaged backup field/);
+});

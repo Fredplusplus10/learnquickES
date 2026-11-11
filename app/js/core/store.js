@@ -78,9 +78,18 @@
   // Twice the most a browser's local storage can hold once exported (about 8 MB); a real backup is tens of KB.
   const MAX_BACKUP_BYTES = 16 * 1024 * 1024;
   function parseBackup(text) {
-    if (typeof text !== 'string' || text.length > MAX_BACKUP_BYTES) throw new Error('This file is too large to be a LearnQuick backup.');
-    const data = JSON.parse(text), S = data && (data.state || data);
-    if (!S || typeof S !== 'object' || !S.profile || !S.plan || !S.activity) throw new Error('This file is not a LearnQuick backup.');
+    if (typeof text !== 'string' || new Blob([text]).size > MAX_BACKUP_BYTES)
+      throw new Error('This file is too large to be a LearnQuick backup.');
+    const data = JSON.parse(text);
+    if (!object(data) || (Object.hasOwn(data, 'app') && data.app !== 'LearnQuick'))
+      throw new Error('This file is not a LearnQuick backup.');
+    const S = Object.hasOwn(data, 'state') ? data.state : data;
+    if (!validState(S) || (S.plan.days !== undefined && ![30, 60, 90].includes(Number(S.plan.days))))
+      throw new Error('This file is not a supported LearnQuick backup.');
+    for (const k of ['done', 'immersion', 'exchanges', 'writing'])
+      if (Object.hasOwn(S, k) && !Array.isArray(S[k])) throw new Error(`Damaged backup field: ${k}`);
+    for (const k of ['tasks', 'units', 'checkpoints', 'cards', 'streak'])
+      if (Object.hasOwn(S, k) && !object(S[k])) throw new Error(`Damaged backup field: ${k}`);
     return P.migrate(S, U.today());
   }
 
