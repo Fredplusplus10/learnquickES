@@ -3,6 +3,7 @@
 #include "lq/course.h"
 #include "lq/progress.h"
 
+#include <cstddef>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -28,12 +29,17 @@ struct Backup {
     LearnerState state;  // with the plan
 };
 
+// Far above any real learner (the sample one is about 60 KB); anything bigger is not a backup.
+inline constexpr std::size_t kMaxBackupBytes = 8u * 1024u * 1024u;
+
 // exportedAt: an ISO 8601 date and time, as the web app writes it.
 std::string writeBackup(const Backup &backup, const Course &course, std::string_view exportedAt);
 
-// nullopt with a reason in `error` for a file that is not a LearnQuick backup. Units and cards of lessons the
-// course does not have are left out, and missing parts read as empty, as the web app's migrate() does. The web
-// app's own settings (voice, reminder, interface language) are not read.
+// nullopt with a reason in `error` for a file that is not a LearnQuick backup: too large, from another app or
+// version, without a profile, a plan and the activity, or with a part of the wrong kind or a count that is
+// negative or does not fit. Units and cards of lessons the course does not have are left out, and missing parts
+// read as empty, as the web app's migrate() does. The web app's own settings (voice, reminder, interface
+// language) are not read.
 std::optional<Backup> readBackup(std::string_view text, const Course &course, std::string *error);
 
 } // namespace lq

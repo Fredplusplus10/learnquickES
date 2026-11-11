@@ -5,6 +5,8 @@
 #include <nlohmann/json.hpp>
 
 #include <algorithm>
+#include <cmath>
+#include <limits>
 
 namespace lq {
 
@@ -35,10 +37,20 @@ std::optional<Date> optionalDate(const json &object, const char *key)
     return dateIn(*it);
 }
 
+// Every count in a backup is zero or more and fits an int. A number that does not is a damaged file: converting
+// it would be undefined, and cutting it to fit would restore progress nobody made.
+int countOf(const json &value)
+{
+    const double n = value.get<double>();
+    if (!std::isfinite(n) || n < 0 || n > static_cast<double>(std::numeric_limits<int>::max()))
+        throw BadFile{"a number is out of range"};
+    return static_cast<int>(n);
+}
+
 int intIn(const json &object, const char *key, int fallback = 0)
 {
     const auto it = object.find(key);
-    return it != object.end() && it->is_number() ? static_cast<int>(it->get<double>()) : fallback;
+    return it != object.end() && it->is_number() ? countOf(*it) : fallback;
 }
 
 double numberIn(const json &object, const char *key)
@@ -218,16 +230,24 @@ std::optional<Backup> readBackup(std::string_view text, const Course &course, st
             *error = why;
         return std::nullopt;
     };
+    if (text.size() > kMaxBackupBytes)
+        return fail("This file is too large to be a LearnQuick backup.");
     json file;
     try {
         file = json::parse(text);
     } catch (const json::exception &) {
         return fail("This file is not a LearnQuick backup: it is not JSON.");
     }
-    // As the web app: {state} or the state itself, with a profile, a plan and the activity.
-    const json &s = file.is_object() && file.contains("state") ? file.at("state") : file;
-    if (!s.is_object() || !s.contains("profile") || !s.contains("plan") || !s.contains("activity"))
+    // As the web app's parseBackup(): {state} or the state itself, from this app and no other, in the one version
+    // there is, with a profile, a plan that starts on a date and the activity.
+    if (!file.is_object() || (file.contains("app") && file.at("app") != "LearnQuick"))
         return fail("This file is not a LearnQuick backup.");
+    const json &s = file.contains("state") ? file.at("state") : file;
+    const auto holds = [&s](const char *key) { return s.contains(key) && s.at(key).is_object(); };
+    if (!s.is_object() || !holds("profile") || !holds("plan") || !holds("activity")
+        || !s.at("plan").contains("start") || !s.at("plan").at("start").is_string()
+        || (s.contains("version") && !(s.at("version").is_number() && s.at("version").get<double>() == 1.0)))
+        return fail("This file is not a supported LearnQuick backup.");
 
     std::map<std::string, int, std::less<>> unitIndex;
     for (std::size_t i = 0; i < course.units.size(); ++i)
@@ -236,6 +256,17 @@ std::optional<Backup> readBackup(std::string_view text, const Course &course, st
     Backup backup;
     LearnerState &state = backup.state;
     try {
+        // A part that is missing reads as empty; one of the wrong kind is damage, and reading it as empty would
+        // restore a learner without it.
+        for (const char *list : {"done", "immersion", "exchanges", "writing"}) {
+            if (s.contains(list) && !s.at(list).is_array())
+                throw BadFile{"\"" + std::string(list) + "\" is not a list"};
+        }
+        for (const char *group : {"tasks", "units", "checkpoints", "cards", "streak"}) {
+            if (s.contains(group) && !s.at(group).is_object())
+                throw BadFile{"\"" + std::string(group) + "\" is not a group of entries"};
+        }
+
         const json &profile = objectIn(s, "profile");
         backup.profile.name = textIn(profile, "name");
         backup.profile.level = textIn(profile, "level");
@@ -251,8 +282,8 @@ std::optional<Backup> readBackup(std::string_view text, const Course &course, st
         if (plan.contains("studyDays")) {
             state.plan.studyDays.clear();
             for (const json &day : arrayIn(plan, "studyDays")) {
-                if (day.is_number() && day.get<int>() >= 0 && day.get<int>() <= 6)
-                    state.plan.studyDays.insert(day.get<int>());
+                if (day.is_number() && day.get<double>() >= 0 && day.get<double>() <= 6)
+                    state.plan.studyDays.insert(static_cast<int>(day.get<double>()));
             }
             if (state.plan.studyDays.empty())
                 state.plan.studyDays = {1, 2, 3, 4, 5};
@@ -306,7 +337,7 @@ std::optional<Backup> readBackup(std::string_view text, const Course &course, st
             activity.speak = intIn(a, "speak");
             for (const auto &[skill, tally] : objectIn(a, "ex").items()) {
                 if (tally.is_array() && tally.size() == 2 && tally[0].is_number() && tally[1].is_number())
-                    activity.answers[skill] = {tally[0].get<int>(), tally[1].get<int>()};
+                    activity.answers[skill] = {countOf(tally[0]), countOf(tally[1])};
             }
         }
         const json &streak = objectIn(s, "streak");

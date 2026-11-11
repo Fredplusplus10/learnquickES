@@ -208,3 +208,57 @@ TEST_CASE("lessons the course does not have, unknown tasks and levels are left o
     CHECK(backup.state.tasks.at(1).size() == 1);
     CHECK(backup.state.input.empty());  // nothing logged in zero minutes
 }
+
+TEST_CASE("a backup from another app or version, or too large, is refused", "[backup]")
+{
+    const json state{{"profile", {{"name", "Ana"}}}, {"plan", {{"start", "2026-11-02"}}}, {"activity", json::object()}};
+    CHECK(refused(json{{"app", "Other"}, {"state", state}}.dump()) == "This file is not a LearnQuick backup.");
+    read(state.dump());  // the state itself, as the web app also takes it
+    read(minimalBackup({{"version", 1}}));
+    const std::string unsupported = "This file is not a supported LearnQuick backup.";
+    CHECK(refused(minimalBackup({{"version", 2}})) == unsupported);
+    CHECK(refused(minimalBackup({{"version", "1"}})) == unsupported);
+    CHECK(refused(minimalBackup({{"activity", json::array()}})) == unsupported);
+    CHECK(refused(minimalBackup({{"profile", "Ana"}})) == unsupported);
+    CHECK(refused(minimalBackup({{"plan", {{"start", 20261102}}}})) == unsupported);
+
+    std::string padded = minimalBackup();
+    padded.append(kMaxBackupBytes - padded.size(), ' ');
+    read(padded);  // exactly the limit
+    CHECK(refused(padded + ' ') == "This file is too large to be a LearnQuick backup.");
+}
+
+TEST_CASE("a backup with a part of the wrong kind is refused, not restored without it", "[backup]")
+{
+    for (const char *list : {"done", "immersion", "exchanges", "writing"}) {
+        CHECK(refused(minimalBackup({{list, json::object()}})).find(list) != std::string::npos);
+        read(minimalBackup({{list, json::array()}}));
+    }
+    for (const char *group : {"tasks", "units", "checkpoints", "cards", "streak"}) {
+        CHECK(refused(minimalBackup({{group, json::array()}})).find(group) != std::string::npos);
+        CHECK(refused(minimalBackup({{group, nullptr}})).find(group) != std::string::npos);
+        read(minimalBackup({{group, json::object()}}));
+    }
+}
+
+TEST_CASE("a backup with a count that is negative or does not fit is refused", "[backup]")
+{
+    const auto activity = [](const json &day) { return minimalBackup({{"activity", {{"2026-11-02", day}}}}); };
+    const std::string outOfRange = "This backup has a damaged entry: a number is out of range.";
+    CHECK(refused(activity({{"xp", 999999999999999999}})) == outOfRange);
+    CHECK(refused(activity({{"xp", 1e300}})) == outOfRange);
+    CHECK(refused(activity({{"sec", -1}})) == outOfRange);
+    CHECK(refused(activity({{"ex", {{"verbs", json::array({3, 1e300})}}}})) == outOfRange);
+    CHECK(refused(minimalBackup({{"streak", {{"longest", 4294967296.0}}}})) == outOfRange);
+
+    // What fits is read as before, and a study day that is no weekday is left out, not an error.
+    const Backup backup = read(minimalBackup({
+        {"plan", {{"start", "2026-11-02"}, {"studyDays", json::array({1, 1e300, -2, 3})}}},
+        {"activity", {{"2026-11-02", {{"xp", 2147483647}, {"ex", {{"verbs", json::array({3, 4})}}}}}}},
+    }));
+    CHECK(backup.state.plan.studyDays == std::set<int>{1, 3});
+    const Activity &day = backup.state.activity.at(d("2026-11-02"));
+    CHECK(day.xp == 2147483647);
+    CHECK(day.answers.at("verbs").correct == 3);
+    CHECK(day.answers.at("verbs").total == 4);
+}

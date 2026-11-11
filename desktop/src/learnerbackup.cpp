@@ -13,8 +13,7 @@
 
 namespace {
 
-// Far above any real learner (the sample one is about 60 KB); anything bigger is not a backup.
-constexpr qint64 kMaxBackupBytes = 8 * 1024 * 1024;
+constexpr qint64 kMaxBackupBytes = static_cast<qint64>(lq::kMaxBackupBytes);
 
 QString qs(const std::string &s)
 {
