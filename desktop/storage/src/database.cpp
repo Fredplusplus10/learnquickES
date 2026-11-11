@@ -324,25 +324,33 @@ bool Database::migrate(const QString &filePath)
     // A new file (schema 0) has nothing to lose; one with data is copied before anything changes.
     if (current > 0 && current < latestSchemaVersion() && !backUpBeforeMigrating(filePath, current))
         return false;
+    // Upgrade all missing schema versions in one transaction. If any version fails, the
+    // whole upgrade is rolled back instead of leaving an intermediate partially upgraded DB.
+    if (current == latestSchemaVersion())
+        return true;
+    if (!db.transaction()) {
+        m_error = db.lastError().text();
+        return false;
+    }
     for (int version = current; version < latestSchemaVersion(); ++version) {
-        if (!db.transaction()) {
-            m_error = db.lastError().text();
-            return false;
-        }
         QSqlQuery query(db);
-        bool ok = true;
-        for (const char *statement : migrations()[static_cast<std::size_t>(version)])
-            ok = ok && query.exec(QString::fromUtf8(statement));
-        ok = ok && query.exec(QStringLiteral("PRAGMA user_version = %1").arg(version + 1));
-        if (!ok) {
+        for (const char *statement : migrations()[static_cast<std::size_t>(version)]) {
+            if (!query.exec(QString::fromUtf8(statement))) {
+                m_error = query.lastError().text();
+                db.rollback();
+                return false;
+            }
+        }
+        if (!query.exec(QStringLiteral("PRAGMA user_version = %1").arg(version + 1))) {
             m_error = query.lastError().text();
             db.rollback();
             return false;
         }
-        if (!db.commit()) {
-            m_error = db.lastError().text();
-            return false;
-        }
+    }
+    if (!db.commit()) {
+        m_error = db.lastError().text();
+        db.rollback();
+        return false;
     }
     return true;
 }
