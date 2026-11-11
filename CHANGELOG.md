@@ -1,6 +1,39 @@
 # Changelog
 
-## Unreleased — 2026-11-01
+## 0.4.6 — 2026-11-11
+
+The first public release. It closes an outside review of how both apps keep, restore and protect a learner's progress.
+
+### Added
+
+- Desktop app: **Settings → Download latest version** opens the public repository's latest release in the learner's own browser. The app itself makes no request.
+- Releases: a version tag builds both downloads, writes `SHA256SUMS.txt` and fills the release notes from `docs/RELEASE_NOTES_TEMPLATE.md` (`scripts/release_notes.py`). The release stays a draft until the maintainer has checked it.
+- A dependency review for this release: [docs/DEPENDENCY_REVIEW.md](docs/DEPENDENCY_REVIEW.md).
+
+### Fixed
+
+- Web app: stored progress that cannot be read is no longer replaced by an empty learner on the next save. It stays as it is until the learner restores a backup or resets.
+- Web app: a tab no longer writes over progress that another tab saved.
+- Web app: a save that fails is shown, and a restore or a reset that the browser refuses says that nothing was changed.
+- Web app: the microphone is released when a recording cannot start or fails, and the button goes back to *Record me*.
+- Both apps: a right answer on the second try no longer counts towards a skill's accuracy. It still earns its XP.
+- Desktop app: an upgrade over several database versions is applied whole or not at all.
+- Desktop app: only one LearnQuick runs on a learner's data folder, so two windows cannot save over each other.
+- Desktop app: what cannot be saved is undone, nothing is celebrated for it, and the learner reads the cause and what to do.
+
+### Changed
+
+- Web app: *Check words* is shown as coming soon. Speech recognition is now asked to run on the device only, and browsers need a Spanish language pack for that which the app cannot offer yet.
+
+### Security
+
+- Both apps check a backup before restoring it: one from another app or version, with a part of the wrong kind, or with a number that is negative or does not fit is refused, and no longer read as if the damaged part were empty.
+- Web app: speech recognition never uses a browser vendor's online service.
+- Downloads are not code-signed yet. Each release carries `SHA256SUMS.txt` and says how to check it ([SECURITY.md](SECURITY.md#unsigned-downloads)).
+
+## 0.4.5 and earlier — 2026-11-01 to 2026-11-07
+
+Everything built before the first public release.
 
 ### Added
 
@@ -151,5 +184,3 @@
 - The certificate PDF is written whole or not at all.
 - The GitHub Actions are pinned to commit SHAs, and `scripts/validate_repository.py` fails on a tracked key, a personal email address or a learner's data file.
 - The code is under the MIT License; the graphic assets are all rights reserved; third-party notices ship with the desktop app ([THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)).
-
-This repository has no published software release yet.

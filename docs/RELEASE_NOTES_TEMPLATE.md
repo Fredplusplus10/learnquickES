@@ -22,7 +22,7 @@ This page is the only official place to download LearnQuick. Your progress carri
 - **Windows** (PowerShell): `Get-FileHash LearnQuick-windows.zip -Algorithm SHA256`
 - **macOS** (Terminal): `shasum -a 256 LearnQuick-macos.zip`
 
-If the fingerprints are not identical, delete the file and download it again.
+If the fingerprints are not identical, delete the file and download it again. Windows shows its one in capital letters, which makes no difference.
 
 ### Why Windows and macOS warn you
 

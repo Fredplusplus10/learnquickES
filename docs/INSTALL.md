@@ -17,16 +17,10 @@ Both work offline, need no account and never send anything over the internet.
 
 ## Download
 
-Until LearnQuick has published releases, every build is attached to the run that made it on GitHub:
+1. Open the latest release: <https://github.com/Fredplusplus10/learnquickES/releases/latest>. If you already have LearnQuick, **Settings → Download latest version** opens the same page.
+2. Under **Assets**, download **`LearnQuick-windows.zip`** or **`LearnQuick-macos.zip`**. You do not need a GitHub account.
 
-1. Sign in to GitHub. Builds can only be downloaded while signed in.
-2. In the repository, open **Actions → Desktop app**.
-3. Open the latest run with a green tick and scroll down to **Artifacts**.
-4. Download **LearnQuick-windows** or **LearnQuick-macos**. GitHub delivers each one as a `.zip` file.
-
-GitHub deletes these files 90 days after the run, so download a recent one.
-
-Once LearnQuick has public releases, the only official downloads will be on the **Releases** page of its public repository, which **Settings → Download latest version** opens. A copy from anywhere else is not official.
+That **Releases** page is the only official place to download LearnQuick. A copy from anywhere else is not official.
 
 ### Check your download
 
@@ -35,7 +29,7 @@ Each release includes a `SHA256SUMS.txt` file with the fingerprint of every down
 - **Windows** (PowerShell): `Get-FileHash LearnQuick-windows.zip -Algorithm SHA256`
 - **macOS** (Terminal): `shasum -a 256 LearnQuick-macos.zip`
 
-The two fingerprints must be identical. If they are not, delete the file, download it again and do not open it until they match.
+The two fingerprints must be identical; Windows shows its one in capital letters, which makes no difference. If they are not, delete the file, download it again and do not open it until they match.
 
 ### Why Windows and macOS warn you
 

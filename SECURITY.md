@@ -54,11 +54,11 @@ LearnQuick's first public releases are **not code-signed**. This is a deliberate
 
 A matching fingerprint shows that the file is the one published and that it arrived intact. It does not show who built it: someone who took over the repository could replace the files and their fingerprints together. Only code signing closes that gap.
 
-No public release exists yet, and the release workflow does not attach `SHA256SUMS.txt` yet.
+The release workflow follows these rules by itself: from a version tag it builds both downloads, writes `SHA256SUMS.txt` and fills the release notes from that template. The release stays a draft until the maintainer has checked it.
 
 ## The repository
 
-- **No secrets to steal.** The apps use no keys, tokens or passwords, and the repository's GitHub Actions have no secrets. The workflows' token is read-only by default.
+- **No secrets to steal.** The apps use no keys, tokens or passwords, and the repository's GitHub Actions have no secrets. The workflows' token is read-only, except in the one job that creates a release.
 - **No learner data.** Databases, backups and viewing histories stay on the learner's computer. `.gitignore` leaves them out, and `scripts/validate_repository.py` fails when a tracked file looks like a key, a personal email address or a learner's file.
 - **Commits** use the maintainer's GitHub noreply address, and contributors should use theirs (see [CONTRIBUTING.md](CONTRIBUTING.md)).
 
@@ -72,5 +72,5 @@ Use GitHub's private vulnerability reporting if the maintainer enables it. Other
 - Database access through parameterized queries and explicit transactions.
 - Microphone and folder permissions requested only for features the learner starts.
 - Explicit retention and export/deletion policies for study events and recordings.
-- Dependency review before a public release.
+- Dependency review before each public release ([docs/DEPENDENCY_REVIEW.md](docs/DEPENDENCY_REVIEW.md) holds the latest).
 - Code signing for Windows and Apple, which will replace the measures in [Unsigned downloads](#unsigned-downloads).

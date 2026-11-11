@@ -170,20 +170,22 @@ The native app is **C++20 + Qt 6**: QML describes the screens and C++ holds all 
 - [Development roadmap](docs/ROADMAP.md)
 - [Native desktop app: build and phases](desktop/README.md) (Spanish)
 - [Brand asset inventory](docs/ASSET_GUIDELINES.md)
+- [Dependency review for the latest release](docs/DEPENDENCY_REVIEW.md)
 
 ## Quality checks
 
 ```bash
 python3 scripts/validate_repository.py
-node --test tests/core.test.js tests/content.test.js
+node --test tests/core.test.js tests/content.test.js tests/audit-regressions.test.js
 ```
 
 The validation script checks SVG files, required repository artifacts, local HTML/CSS asset references and Markdown relative links. The test suites cover calendar and holiday rules, streak and freeze logic, spaced repetition, answer checking, every verb × tense form, a full simulated 30-day plan and the integrity of all 25 lessons. GitHub Actions runs both on every push, plus a JavaScript syntax check.
 
-For the native app, a second workflow runs whenever `desktop/` changes:
+For the native app, a second workflow runs for each version tag (`v*`), or when started by hand:
 - it builds on Windows and macOS;
 - it runs a headless smoke test, which fails on any QML warning, on both the build and the deployed app;
-- it publishes the Windows build and a universal `.dmg` as downloadable artifacts.
+- it keeps the Windows build and a universal `.dmg` as downloadable artifacts;
+- for a version tag, it creates a draft release with `LearnQuick-windows.zip`, `LearnQuick-macos.zip` and `SHA256SUMS.txt`.
 
 ## Privacy and distribution
 
