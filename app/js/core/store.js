@@ -7,19 +7,50 @@
   const demo = typeof location !== 'undefined' && new URLSearchParams(location.search).has('demo');
   const KEY = demo ? 'learnquick.demo.v1' : 'learnquick.v1';
   let available = true;
+  let writeBlocked = false;
 
+  const object = v => !!v && typeof v === 'object' && !Array.isArray(v);
+  // A malformed localStorage document is not an empty learner. Do not overwrite it on startup.
+  function validState(S) {
+    return object(S) && object(S.profile) && object(S.plan) && object(S.activity)
+      && typeof S.plan.start === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(S.plan.start) && U.iso(U.parse(S.plan.start)) === S.plan.start
+      && (S.version === undefined || S.version === 1);
+  }
   function load() {
     const today = U.today();
     try {
       const raw = localStorage.getItem(KEY);
-      if (raw) return P.migrate(JSON.parse(raw), today);
-    } catch (e) { available = false; console.warn('LearnQuick: storage unavailable', e); }
+      if (raw !== null) {
+        const parsed = JSON.parse(raw);
+        if (!validState(parsed)) throw new Error('invalid or unsupported stored state');
+        writeBlocked = false; available = true;
+        return P.migrate(parsed, today);
+      } else {
+        writeBlocked = false; available = true;
+      }
+    } catch (e) {
+      available = false;
+      writeBlocked = true;
+      console.warn('LearnQuick: stored progress could not be read; existing data is protected', e);
+    }
     return demo ? demoState(today) : P.defaultState(today);
   }
-  function save(S) {
-    try { localStorage.setItem(KEY, JSON.stringify(S)); available = true; }
-    catch (e) { available = false; console.warn('LearnQuick: could not save', e); }
+  function save(S, replaceExisting = false) {
+    if (writeBlocked && !replaceExisting) return false;
+    try {
+      const next = JSON.stringify(S);
+      localStorage.setItem(KEY, next);
+      writeBlocked = false;
+      available = true;
+      return true;
+    } catch (e) {
+      available = false;
+      console.warn('LearnQuick: could not save; previous progress was preserved', e);
+      return false;
+    }
   }
+  // Only an explicit restore/reset may replace damaged progress or changes from another tab.
+  function replace(S) { return save(S, true); }
   // Ask the browser not to evict our data under storage pressure (no-op where unsupported).
   function persist() { try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch { /* optional */ } }
 
@@ -75,5 +106,5 @@
     return S;
   }
 
-  LQ.store = { KEY, MAX_BACKUP_BYTES, demo, load, save, persist, exportBackup, parseBackup, download, available: () => available, demoState };
+  LQ.store = { KEY, MAX_BACKUP_BYTES, demo, load, save, replace, persist, exportBackup, parseBackup, download, available: () => available, demoState };
 })(typeof window !== 'undefined' ? window : globalThis);
