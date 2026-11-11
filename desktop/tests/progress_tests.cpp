@@ -147,8 +147,8 @@ TEST_CASE("answers earn XP by how right they were and count for their skill", "[
     CHECK(state.activity[day].xp == kXpCorrect + kXpAlmost + kXpRetry);
     recordAnswer(state, "verbs", false, false, false, day);
     CHECK(state.activity[day].xp == kXpCorrect + kXpAlmost + kXpRetry);
-    CHECK(state.activity[day].answers["verbs"].correct == 3);
-    CHECK(state.activity[day].answers["verbs"].total == 4);
+    CHECK(state.activity[day].answers["verbs"].correct == 2);
+    CHECK(state.activity[day].answers["verbs"].total == 3);
 
     recordPhrase(state, day);
     CHECK(state.activity[day].speak == 1);

@@ -199,9 +199,12 @@ Events recordAnswer(LearnerState &state, std::string_view skill, bool ok, bool a
     auto tally = answers.find(skill);
     if (tally == answers.end())
         tally = answers.emplace(std::string(skill), Tally{}).first;
-    ++tally->second.total;
-    if (ok)
-        ++tally->second.correct;
+    // A requeued correction is practice, not another first attempt for accuracy.
+    if (!retry) {
+        ++tally->second.total;
+        if (ok)
+            ++tally->second.correct;
+    }
     return addXp(state, !ok ? 0 : almost ? kXpAlmost : retry ? kXpRetry : kXpCorrect, today);
 }
 

@@ -55,3 +55,12 @@ test('backup validation rejects unrelated files and incompatible schemas', () =>
   assert.throws(() => LQ.store.parseBackup(backup({ ...s, plan: { ...s.plan, start: '2026-02-31' } })), /not a supported/);
   assert.throws(() => LQ.store.parseBackup(backup({ ...s, done: {} })), /Damaged backup field/);
 });
+
+test('retries award XP but do not inflate the first-try accuracy', () => {
+  const s = state();
+  const day = '2026-11-02';
+  LQ.progress.recordAnswer(s, 'verbs', { ok: false }, day);
+  LQ.progress.recordAnswer(s, 'verbs', { ok: true, retry: true }, day);
+  assert.deepEqual(s.activity[day].ex.verbs, [0, 1]);
+  assert.equal(s.activity[day].xp, LQ.progress.XP.retry);
+});

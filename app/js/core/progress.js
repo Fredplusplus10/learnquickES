@@ -99,7 +99,8 @@
   }
   function recordAnswer(S, skill, result, today) {
     const a = act(S, today), e = a.ex[skill] || (a.ex[skill] = [0, 0]);
-    e[1]++; if (result.ok) e[0]++;
+    // Accuracy measures first attempts. Requeued corrections still award practice XP.
+    if (!result.retry) { e[1]++; if (result.ok) e[0]++; }
     return addXP(S, result.ok ? (result.almost ? XP.almost : result.retry ? XP.retry : XP.correct) : 0, today);
   }
   const addSeconds = (S, sec, today) => { act(S, today).sec += sec; };
