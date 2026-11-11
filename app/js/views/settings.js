@@ -108,9 +108,19 @@
     'day-off-remove'(b) { set(S => { S.plan.daysOff = S.plan.daysOff.filter(d => d !== b.dataset.v); }); },
     ics() { LQ.store.download('learnquick-reminder.ics', icsFile(LQ.state), 'text/calendar'); LQ.ui.toast(L('Open the downloaded file to add it to Calendar.', 'Abre el archivo descargado para añadirlo al Calendario.')); },
     backup() { LQ.store.exportBackup(LQ.state); LQ.ui.toast(L('Backup downloaded. Keep it in iCloud Drive or Documents.', 'Copia descargada. Guárdala en iCloud Drive o en Documentos.')); LQ.app.render(); },
-    'restore-confirm'() { if (!LQ.pendingRestore) return; LQ.app.replaceState(LQ.pendingRestore); LQ.pendingRestore = null; LQ.ui.closeModal(); LQ.ui.toast(L('Backup restored.', 'Copia restaurada.')); LQ.app.go(''); },
+    'restore-confirm'() {
+      if (!LQ.pendingRestore) return;
+      // replaceState() throws when the browser refuses the write; the progress on screen is then still the old one.
+      try { LQ.app.replaceState(LQ.pendingRestore); }
+      catch (e) { LQ.pendingRestore = null; LQ.ui.closeModal(); LQ.ui.toast(L('The backup could not be saved in this browser, so nothing was changed.', 'No se pudo guardar la copia en este navegador; no se ha cambiado nada.')); return; }
+      LQ.pendingRestore = null; LQ.ui.closeModal(); LQ.ui.toast(L('Backup restored.', 'Copia restaurada.')); LQ.app.go('');
+    },
     'reset-ask'() { LQ.ui.modal(`<h2>${L('Delete all progress?', '¿Borrar todo el progreso?')}</h2><p>${L('This cannot be undone. Download a backup first if you might want it back.', 'No se puede deshacer. Descarga antes una copia si quizá la quieras recuperar.')}</p><div class="bottom-buttons"><button type="button" class="secondary-btn" data-action="backup">${ico('download')}${L('Download backup', 'Descargar copia')}</button><button type="button" class="primary-btn danger" data-action="reset-confirm">${ico('trash', 'white')}${L('Delete everything', 'Borrar todo')}</button></div>`); },
-    'reset-confirm'() { LQ.app.replaceState(P.defaultState(U.today())); LQ.ui.closeModal(); LQ.app.go('onboarding'); }
+    'reset-confirm'() {
+      try { LQ.app.replaceState(P.defaultState(U.today())); }
+      catch (e) { LQ.ui.closeModal(); LQ.ui.toast(L('Your progress could not be deleted: this browser refused the change.', 'No se pudo borrar el progreso: este navegador rechazó el cambio.')); return; }
+      LQ.ui.closeModal(); LQ.app.go('onboarding');
+    }
   });
   Object.assign(LQ.changes, {
     'plan-start'(el) { if (el.value) set(S => { S.plan.start = el.value; }); },
